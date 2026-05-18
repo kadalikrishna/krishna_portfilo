@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Warehouse Robot Simulation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    font-family: 'Space Mono', monospace;
+    overflow: hidden;
+  }
+
+  .frame {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: #020305;
+  }
+
+  /* Dotted tech grid */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,80,40,0.18) 1px, transparent 1px);
+    background-size: 22px 22px;
+    z-index: 0;
+  }
+
+  /* Cinematic vignette */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.82) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Ambient glow left side */
+  .ambient-left {
+    position: absolute;
+    left: -60px; top: 60px;
+    width: 260px; height: 320px;
+    background: radial-gradient(ellipse, rgba(255,55,20,0.07) 0%, transparent 70%);
+    z-index: 0;
+    animation: ambientPulse 4s ease-in-out infinite;
+  }
+
+  /* Floating particles canvas */
+  canvas#particles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Main simulation canvas */
+  canvas#sim {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  /* Left typography panel */
+  .left-panel {
+    position: absolute;
+    left: 0; top: 0;
+    width: 42%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0 0 18px;
+    pointer-events: none;
+  }
+
+  .tag-line {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 3px;
+    color: rgba(255,90,40,0.9);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    animation: fadeSlideIn 1s ease both;
+  }
+
+  .main-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    line-height: 0.93;
+    color: #fff;
+    letter-spacing: 1px;
+    animation: fadeSlideIn 1s 0.2s ease both;
+    text-shadow: 0 0 40px rgba(255,60,20,0.3);
+  }
+
+  .main-title span {
+    color: #ff4a20;
+    display: block;
+  }
+
+  .divider {
+    width: 28px;
+    height: 2px;
+    background: linear-gradient(90deg, #ff4a20, transparent);
+    margin: 10px 0;
+    animation: fadeSlideIn 1s 0.35s ease both;
+  }
+
+  .sub-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    letter-spacing: 0.5px;
+    animation: fadeSlideIn 1s 0.5s ease both;
+  }
+
+  /* Mini dashboard overlays */
+  .dash-top-right {
+    position: absolute;
+    top: 14px; right: 12px;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fadeSlideIn 1.2s 0.6s ease both;
+  }
+
+  .dash-stat {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,70,30,0.18);
+    border-radius: 3px;
+    padding: 3px 7px;
+    font-family: 'Space Mono', monospace;
+    font-size: 6px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+    backdrop-filter: blur(4px);
+  }
+  .dash-stat .val {
+    color: #ff5a28;
+    font-weight: 700;
+  }
+
+  .dash-bottom {
+    position: absolute;
+    bottom: 14px;
+    left: 18px;
+    right: 12px;
+    z-index: 15;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    animation: fadeSlideIn 1.2s 0.8s ease both;
+  }
+
+  .status-bar {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+  .status-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #ff4a20;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  .status-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 5.5px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .version-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 5.5px;
+    color: rgba(255,70,30,0.5);
+    letter-spacing: 2px;
+  }
+
+  /* Scan line overlay for cinematic feel */
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.04) 2px,
+      rgba(0,0,0,0.04) 4px
+    );
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  /* Corner brackets */
+  .corner {
+    position: absolute;
+    width: 14px; height: 14px;
+    z-index: 16;
+  }
+  .corner.tl { top: 8px; left: 8px; border-top: 1.5px solid rgba(255,70,30,0.5); border-left: 1.5px solid rgba(255,70,30,0.5); }
+  .corner.tr { top: 8px; right: 8px; border-top: 1.5px solid rgba(255,70,30,0.5); border-right: 1.5px solid rgba(255,70,30,0.5); }
+  .corner.bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid rgba(255,70,30,0.5); border-left: 1.5px solid rgba(255,70,30,0.5); }
+  .corner.br { bottom: 8px; right: 8px; border-bottom: 1.5px solid rgba(255,70,30,0.5); border-right: 1.5px solid rgba(255,70,30,0.5); }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes ambientPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="grid-bg"></div>
+  <div class="ambient-left"></div>
+  <canvas id="particles"></canvas>
+  <canvas id="sim"></canvas>
+  <div class="vignette"></div>
+  <div class="scanlines"></div>
+
+  <!-- Corner brackets -->
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <!-- Left Typography -->
+  <div class="left-panel">
+    <div class="tag-line">// BFS · v2.4.1</div>
+    <div class="main-title">AI-Based<br>Warehouse<br><span>Robot</span><br>Simulation</div>
+    <div class="divider"></div>
+    <div class="sub-text">
+      Autonomous fleet<br>
+      pathfinding with<br>
+      dynamic rerouting
+    </div>
+  </div>
+
+  <!-- Dashboard overlays -->
+  <div class="dash-top-right">
+    <div class="dash-stat">ROBOTS <span class="val" id="robot-count">04</span></div>
+    <div class="dash-stat">PATHS <span class="val" id="path-count">08</span></div>
+    <div class="dash-stat">EFF <span class="val">98.2%</span></div>
+  </div>
+
+  <div class="dash-bottom">
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <div class="status-label">LIVE SIMULATION</div>
+    </div>
+    <div class="version-tag">AI-WRS © 2025</div>
+  </div>
+</div>
+
+<script>
+// ─── PARTICLE SYSTEM ───────────────────────────────────────────
+const pCanvas = document.getElementById('particles');
+const pCtx = pCanvas.getContext('2d');
+const frame = document.querySelector('.frame');
+const W = frame.offsetWidth, H = frame.offsetHeight;
+pCanvas.width = W; pCanvas.height = H;
+
+const particles = Array.from({length: 38}, () => ({
+  x: Math.random() * W,
+  y: Math.random() * H,
+  vx: (Math.random() - 0.5) * 0.25,
+  vy: (Math.random() - 0.5) * 0.25,
+  size: Math.random() * 1.2 + 0.3,
+  alpha: Math.random() * 0.4 + 0.1,
+  phase: Math.random() * Math.PI * 2
+}));
+
+function animParticles(t) {
+  pCtx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    const a = p.alpha * (0.6 + 0.4 * Math.sin(t * 0.001 + p.phase));
+    pCtx.beginPath();
+    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    pCtx.fillStyle = `rgba(255,${80 + Math.floor(Math.random()*40)},30,${a})`;
+    pCtx.fill();
+  });
+}
+
+// ─── SIMULATION ────────────────────────────────────────────────
+const sim = document.getElementById('sim');
+const ctx = sim.getContext('2d');
+sim.width = W; sim.height = H;
+
+// Grid occupies right/center area
+const GRID_X = Math.floor(W * 0.38);
+const GRID_Y = 28;
+const GRID_W = W - GRID_X - 12;
+const GRID_H = H - GRID_Y - 28;
+const COLS = 10, ROWS = 10;
+const CW = GRID_W / COLS, CH = GRID_H / ROWS;
+
+function gx(c) { return GRID_X + c * CW + CW / 2; }
+function gy(r) { return GRID_Y + r * CH + CH / 2; }
+function gcx(c) { return GRID_X + c * CW; }
+function gcy(r) { return GRID_Y + r * CH; }
+
+// Static obstacles (shelves)
+const OBSTACLES = [
+  [2,1],[2,2],[2,3],
+  [5,1],[5,2],
+  [7,1],[7,2],[7,3],
+  [1,5],[2,5],
+  [4,5],[4,6],
+  [6,5],[7,5],
+  [9,4],[9,5],
+  [3,8],[4,8],
+  [6,8],[7,8],
+];
+const obsSet = new Set(OBSTACLES.map(([c,r]) => `${c},${r}`));
+
+function isObs(c, r) {
+  return c < 0 || c >= COLS || r < 0 || r >= ROWS || obsSet.has(`${c},${r}`);
+}
+
+// BFS pathfinding
+function bfs(sc, sr, ec, er) {
+  if (isObs(ec, er)) return [];
+  const queue = [[sc, sr]];
+  const visited = new Map();
+  visited.set(`${sc},${sr}`, null);
+  const dirs = [[0,-1],[0,1],[-1,0],[1,0]];
+  while (queue.length) {
+    const [c, r] = queue.shift();
+    if (c === ec && r === er) {
+      const path = [];
+      let cur = `${c},${r}`;
+      while (cur !== null) {
+        const [pc, pr] = cur.split(',').map(Number);
+        path.unshift([pc, pr]);
+        cur = visited.get(cur);
+      }
+      return path;
+    }
+    for (const [dc, dr] of dirs) {
+      const nc = c + dc, nr = r + dr;
+      const key = `${nc},${nr}`;
+      if (!isObs(nc, nr) && !visited.has(key)) {
+        visited.set(key, `${c},${r}`);
+        queue.push([nc, nr]);
+      }
+    }
+  }
+  return [];
+}
+
+// Robot definitions
+const ROBOT_COLORS = [
+  { body: '#ff4a20', glow: 'rgba(255,74,32,0.7)', trail: 'rgba(255,74,32,' },
+  { body: '#ff8c42', glow: 'rgba(255,140,66,0.7)', trail: 'rgba(255,140,66,' },
+  { body: '#ff3300', glow: 'rgba(255,51,0,0.7)', trail: 'rgba(255,51,0,' },
+  { body: '#ffb347', glow: 'rgba(255,179,71,0.7)', trail: 'rgba(255,179,71,' },
+];
+
+class Robot {
+  constructor(id, sc, sr, ec, er) {
+    this.id = id;
+    this.col = sc; this.row = sr;
+    this.targetCol = ec; this.targetRow = er;
+    this.path = bfs(sc, sr, ec, er);
+    this.pathIdx = 0;
+    this.px = gx(sc); this.py = gy(sr);
+    this.tx = this.px; this.ty = this.py;
+    this.speed = 0.018 + Math.random() * 0.012;
+    this.t = 0;
+    this.color = ROBOT_COLORS[id % ROBOT_COLORS.length];
+    this.trailPoints = [];
+    this.rerouting = false;
+    this.rerouteTimer = 0;
+    this.waiting = 0;
+    this.size = 5.5;
+    this.angle = 0;
+  }
+
+  update(dt) {
+    if (this.waiting > 0) { this.waiting -= dt; return; }
+    if (this.rerouting) {
+      this.rerouteTimer -= dt;
+      if (this.rerouteTimer <= 0) this.rerouting = false;
+      return;
+    }
+    this.t += this.speed;
+    if (this.t >= 1) {
+      this.t = 0;
+      this.px = this.tx; this.py = this.ty;
+      this.col = this.nextCol ?? this.col;
+      this.row = this.nextRow ?? this.row;
+      this.pathIdx++;
+      if (this.pathIdx >= this.path.length) {
+        // Reached destination, pick new one
+        this.pathIdx = 0;
+        const [nc, nr] = this.randomFreeCell();
+        this.targetCol = nc; this.targetRow = nr;
+        this.path = bfs(this.col, this.row, nc, nr);
+        if (!this.path.length) this.path = [[this.col, this.row]];
+        this.waiting = 200 + Math.random() * 300;
+      }
+      if (this.pathIdx < this.path.length) {
+        const [nc, nr] = this.path[this.pathIdx];
+        this.nextCol = nc; this.nextRow = nr;
+        this.tx = gx(nc); this.ty = gy(nr);
+        const dx = this.tx - this.px, dy = this.ty - this.py;
+        this.angle = Math.atan2(dy, dx);
+      }
+    }
+    const cx = this.px + (this.tx - this.px) * this.t;
+    const cy = this.py + (this.ty - this.py) * this.t;
+    this.trailPoints.push({x: cx, y: cy, age: 0});
+    if (this.trailPoints.length > 18) this.trailPoints.shift();
+    this.trailPoints.forEach(p => p.age++);
+    this.x = cx; this.y = cy;
+  }
+
+  randomFreeCell() {
+    let c, r;
+    do { c = Math.floor(Math.random() * COLS); r = Math.floor(Math.random() * ROWS); }
+    while (isObs(c, r));
+    return [c, r];
+  }
+
+  triggerReroute() {
+    this.rerouting = true;
+    this.rerouteTimer = 400;
+    const [nc, nr] = this.randomFreeCell();
+    this.targetCol = nc; this.targetRow = nr;
+    this.path = bfs(this.col, this.row, nc, nr);
+    if (!this.path.length) this.path = [[this.col, this.row]];
+    this.pathIdx = 0;
+    this.tx = this.px = this.x || gx(this.col);
+    this.ty = this.py = this.y || gy(this.row);
+    this.t = 0;
+  }
+}
+
+// Init robots
+const startPositions = [[0,0],[9,0],[0,9],[9,9]];
+const goals = [[8,8],[1,8],[8,1],[1,1]];
+const robots = startPositions.map((s, i) => new Robot(i, s[0], s[1], goals[i][0], goals[i][1]));
+
+// Reroute timer
+let rerouteInterval = 2800;
+let lastReroute = 0;
+
+// ─── DRAW HELPERS ──────────────────────────────────────────────
+function drawGrid(t) {
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const x = gcx(c), y = gcy(r);
+      if (isObs(c, r)) {
+        // Shelf block — layered 2.5D paper-cut style
+        const bx = x + 1, by = y + 2;
+        // Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
+        ctx.fillRect(bx + 2, by + 2, CW - 3, CH - 4);
+        // Shelf body
+        const sg = ctx.createLinearGradient(bx, by, bx, by + CH - 4);
+        sg.addColorStop(0, '#1a1008');
+        sg.addColorStop(1, '#0c0804');
+        ctx.fillStyle = sg;
+        ctx.fillRect(bx, by, CW - 3, CH - 4);
+        // Top highlight
+        ctx.fillStyle = 'rgba(255,100,40,0.09)';
+        ctx.fillRect(bx, by, CW - 3, 2);
+        // Edge accent
+        ctx.strokeStyle = 'rgba(255,70,30,0.15)';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(bx, by, CW - 3, CH - 4);
+      } else {
+        // Floor tile — subtle
+        ctx.strokeStyle = 'rgba(255,60,20,0.055)';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(x + 0.5, y + 0.5, CW - 1, CH - 1);
+        // Corner dots
+        ctx.fillStyle = 'rgba(255,80,30,0.12)';
+        [[x+1,y+1],[x+CW-2,y+1],[x+1,y+CH-2],[x+CW-2,y+CH-2]].forEach(([dx,dy]) => {
+          ctx.beginPath(); ctx.arc(dx, dy, 0.7, 0, Math.PI*2); ctx.fill();
+        });
+      }
+    }
+  }
+}
+
+function drawBFSPaths(t) {
+  robots.forEach(rob => {
+    if (!rob.path || rob.path.length < 2) return;
+    const pts = rob.path.map(([c,r]) => [gx(c), gy(r)]);
+
+    // Glow path
+    for (let pass = 0; pass < 2; pass++) {
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      if (pass === 0) {
+        ctx.strokeStyle = rob.rerouting
+          ? `rgba(255,200,50,0.12)`
+          : `${rob.color.trail}0.08)`;
+        ctx.lineWidth = 5;
+      } else {
+        // Animated dash
+        ctx.setLineDash([3, 5]);
+        ctx.lineDashOffset = -(t * 0.03) % 8;
+        ctx.strokeStyle = rob.rerouting
+          ? `rgba(255,200,50,0.55)`
+          : `${rob.color.trail}0.5)`;
+        ctx.lineWidth = 1;
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Node dots along path
+    pts.forEach(([px, py], i) => {
+      if (i === 0 || i === pts.length - 1) return;
+      ctx.beginPath();
+      ctx.arc(px, py, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = `${rob.color.trail}0.35)`;
+      ctx.fill();
+    });
+
+    // Destination marker
+    const [dc, dr] = [rob.targetCol, rob.targetRow];
+    const dx = gx(dc), dy = gy(dr);
+    const pulse = 0.5 + 0.5 * Math.sin(t * 0.004 + rob.id);
+    ctx.beginPath();
+    ctx.arc(dx, dy, 3.5 + pulse * 2, 0, Math.PI * 2);
+    ctx.strokeStyle = `${rob.color.trail}${0.4 + pulse * 0.3})`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(dx, dy, 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = rob.color.body;
+    ctx.fill();
+  });
+}
+
+function drawRobotTrails() {
+  robots.forEach(rob => {
+    if (rob.trailPoints.length < 2) return;
+    for (let i = 1; i < rob.trailPoints.length; i++) {
+      const a = rob.trailPoints[i-1], b = rob.trailPoints[i];
+      const alpha = (i / rob.trailPoints.length) * 0.55;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = `${rob.color.trail}${alpha})`;
+      ctx.lineWidth = 2.5 * (i / rob.trailPoints.length);
+      ctx.stroke();
+    }
+  });
+}
+
+function drawRobot(rob, t) {
+  if (!rob.x) return;
+  const x = rob.x, y = rob.y;
+  const s = rob.size;
+  const pulse = 0.5 + 0.5 * Math.sin(t * 0.005 + rob.id * 1.3);
+
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rob.angle);
+
+  // Outer glow
+  const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 2.5);
+  grd.addColorStop(0, rob.rerouting ? 'rgba(255,200,50,0.35)' : `${rob.color.trail}${0.25 + pulse * 0.15})`);
+  grd.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd;
+  ctx.beginPath(); ctx.arc(0, 0, s * 2.5, 0, Math.PI * 2); ctx.fill();
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.beginPath(); ctx.ellipse(1.5, s * 0.7, s * 0.8, s * 0.3, 0, 0, Math.PI * 2); ctx.fill();
+
+  // Robot body — 2.5D square bot
+  const bg = ctx.createLinearGradient(-s, -s, s, s);
+  if (rob.rerouting) {
+    bg.addColorStop(0, '#ffcc44'); bg.addColorStop(1, '#ff8800');
+  } else {
+    bg.addColorStop(0, rob.color.body); bg.addColorStop(1, '#1a0a00');
+  }
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect(-s, -s, s * 2, s * 2, 1.5);
+  ctx.fill();
+
+  // Top face highlight
+  ctx.fillStyle = 'rgba(255,255,255,0.12)';
+  ctx.fillRect(-s + 1, -s + 1, s * 2 - 2, s * 0.6);
+
+  // "Eyes" / sensors
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(-s * 0.35, -s * 0.2, 1.0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.35, -s * 0.2, 1.0, 0, Math.PI * 2); ctx.fill();
+
+  // Direction indicator
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.beginPath(); ctx.moveTo(s * 0.7, 0); ctx.lineTo(s + 2, -1.5); ctx.lineTo(s + 2, 1.5); ctx.closePath(); ctx.fill();
+
+  // Rerouting flash
+  if (rob.rerouting) {
+    ctx.strokeStyle = 'rgba(255,220,0,0.9)';
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(-s, -s, s * 2, s * 2);
+  }
+
+  ctx.restore();
+}
+
+function drawRerouteEffect(rob, t) {
+  if (!rob.rerouting || !rob.x) return;
+  const x = rob.x, y = rob.y;
+  const age = (rob.rerouteTimer) / 400;
+  const ring = (1 - age) * 22;
+  ctx.beginPath();
+  ctx.arc(x, y, ring, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(255,200,50,${age * 0.7})`;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // "REROUTING" label
+  ctx.font = '500 5px "Rajdhani"';
+  ctx.fillStyle = `rgba(255,200,50,${0.5 + age * 0.5})`;
+  ctx.fillText('REROUTING', x - 14, y - 12);
+}
+
+// ─── MAIN LOOP ─────────────────────────────────────────────────
+let lastTime = 0;
+function loop(t) {
+  requestAnimationFrame(loop);
+  const dt = t - lastTime; lastTime = t;
+
+  // Particle layer
+  animParticles(t);
+
+  // Simulation layer
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid shadow/base
+  ctx.fillStyle = 'rgba(10,5,2,0.0)';
+  ctx.fillRect(GRID_X, GRID_Y, GRID_W, GRID_H);
+
+  drawGrid(t);
+  drawBFSPaths(t);
+  drawRobotTrails();
+  robots.forEach(r => drawRobot(r, t));
+  robots.forEach(r => drawRerouteEffect(r, t));
+
+  // Update robots
+  robots.forEach(r => r.update(dt));
+
+  // Periodic reroute trigger
+  if (t - lastReroute > rerouteInterval) {
+    lastReroute = t;
+    const r = robots[Math.floor(Math.random() * robots.length)];
+    r.triggerReroute();
+    rerouteInterval = 2200 + Math.random() * 1800;
+  }
+
+  // Parallax shimmer over grid
+  const shimmerAlpha = 0.025 + 0.02 * Math.sin(t * 0.002);
+  const sg = ctx.createLinearGradient(GRID_X, GRID_Y, GRID_X, GRID_Y + GRID_H);
+  sg.addColorStop(0, `rgba(255,80,30,${shimmerAlpha})`);
+  sg.addColorStop(0.5, 'transparent');
+  sg.addColorStop(1, `rgba(255,50,10,${shimmerAlpha * 0.5})`);
+  ctx.fillStyle = sg;
+  ctx.fillRect(GRID_X, GRID_Y, GRID_W, GRID_H);
+}
+
+// Initialize robot positions
+robots.forEach(r => { r.x = gx(r.col); r.y = gy(r.row); });
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

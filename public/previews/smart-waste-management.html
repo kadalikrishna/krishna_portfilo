@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Waste Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #040506;
+  --w: #ffffff;
+  --w05: rgba(255,255,255,0.05);
+  --w10: rgba(255,255,255,0.10);
+  --w20: rgba(255,255,255,0.20);
+  --w30: rgba(255,255,255,0.30);
+  --w55: rgba(255,255,255,0.55);
+  --green: rgba(120,230,160,0.85);
+  --green-dim: rgba(120,230,160,0.15);
+  --green-glow: rgba(120,230,160,0.35);
+  --teal: rgba(100,210,200,0.75);
+  --teal-dim: rgba(100,210,200,0.12);
+  --dur: 4s;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #0c0d0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Stage ── */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 40px 120px rgba(0,0,0,0.95),
+    0 0 60px rgba(120,230,160,0.03);
+}
+
+/* ── Dot grid ── */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.042) 1px, transparent 1px);
+  background-size: 22px 22px;
+  animation: gridDrift var(--dur) ease-in-out infinite;
+}
+@keyframes gridDrift {
+  0%,100% { transform: translate(0,0); }
+  50%      { transform: translate(-3px,-3px); }
+}
+
+/* ── Ambient orbs ── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+.orb-main {
+  width: 300px; height: 300px;
+  top: 30%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(120,230,160,0.055) 0%, transparent 70%);
+  animation: orbPulse var(--dur) ease-in-out infinite;
+}
+.orb-low {
+  width: 260px; height: 140px;
+  bottom: -30px; left: 40%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(100,210,200,0.04) 0%, transparent 70%);
+  animation: orbPulse var(--dur) ease-in-out infinite 1s;
+}
+@keyframes orbPulse {
+  0%,100% { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.1); }
+}
+
+/* ── Corner marks ── */
+.corner { position: absolute; width: 12px; height: 12px; z-index: 8; }
+.corner-tl { top: 16px; left: 16px; border-top: 1px solid var(--w20); border-left: 1px solid var(--w20); }
+.corner-tr { top: 16px; right: 16px; border-top: 1px solid var(--w20); border-right: 1px solid var(--w20); }
+.corner-bl { bottom: 16px; left: 16px; border-bottom: 1px solid var(--w20); border-left: 1px solid var(--w20); }
+.corner-br { bottom: 16px; right: 16px; border-bottom: 1px solid var(--w20); border-right: 1px solid var(--w20); }
+
+/* ── Status bar ── */
+.status-bar {
+  position: absolute;
+  top: 22px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 7px;
+  z-index: 8;
+}
+.status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
+  animation: blinkDot 1.4s ease-in-out infinite;
+}
+.status-text {
+  font-size: 7px; letter-spacing: 0.22em;
+  color: var(--w30); text-transform: uppercase;
+}
+@keyframes blinkDot {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.2; }
+}
+
+/* ── Full-card scan beam ── */
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(120,230,160,0.12), transparent);
+  top: 0; z-index: 9; pointer-events: none;
+  animation: scanLine var(--dur) linear infinite;
+}
+@keyframes scanLine {
+  0%   { top: -2px; opacity: 0; }
+  4%   { opacity: 1; }
+  96%  { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+
+/* ── LAYERS (2.5D parallax) ── */
+.l1 { animation: l1f var(--dur) ease-in-out infinite; }
+.l2 { animation: l2f var(--dur) ease-in-out infinite; }
+.l3 { animation: l3f var(--dur) ease-in-out infinite; }
+@keyframes l1f { 0%,100%{transform:translate(0,0)} 50%{transform:translate(2px,3px)} }
+@keyframes l2f { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-4px,-5px)} }
+@keyframes l3f { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-8px,-10px)} }
+
+/* ── Smart bin — centre piece ── */
+.bin-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -52%);
+}
+
+.bin-body {
+  width: 72px;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* lid */
+.bin-lid {
+  width: 80px;
+  height: 10px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+  border-radius: 4px 4px 0 0;
+  border: 1px solid rgba(255,255,255,0.14);
+  margin-left: -4px;
+  position: relative;
+  animation: lidBob var(--dur) ease-in-out infinite;
+  transform-origin: bottom center;
+}
+@keyframes lidBob {
+  0%,100% { transform: rotateX(0deg) translateY(0); }
+  30%     { transform: rotateX(-8deg) translateY(-2px); }
+  60%     { transform: rotateX(0deg) translateY(0); }
+}
+
+/* body */
+.bin-container {
+  width: 72px;
+  height: 90px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* fill level */
+.bin-fill {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top,
+    rgba(120,230,160,0.22),
+    rgba(120,230,160,0.08));
+  border-top: 1px solid rgba(120,230,160,0.30);
+  animation: fillLevel var(--dur) ease-in-out infinite;
+}
+@keyframes fillLevel {
+  0%,100% { height: 58%; }
+  50%      { height: 62%; }
+}
+
+/* fill label */
+.fill-pct {
+  position: absolute;
+  bottom: 6px; left: 0; right: 0;
+  text-align: center;
+  font-size: 9px;
+  color: var(--green);
+  letter-spacing: 0.05em;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+/* vertical lines on bin for texture */
+.bin-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 16px
+  );
+}
+
+/* sensor LED strip */
+.sensor-strip {
+  position: absolute;
+  top: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 5px;
+}
+.sensor-led {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+  animation: blinkDot 1.4s ease-in-out infinite;
+}
+.sensor-led:nth-child(2) { animation-delay: 0.4s; }
+.sensor-led:nth-child(3) { animation-delay: 0.8s; }
+
+/* ── Sensor ripple rings around bin ── */
+.ripple-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(120,230,160,0.18);
+  transform: translate(-50%,-50%) scale(0.6);
+  animation: rippleOut var(--dur) ease-out infinite;
+}
+.ripple-ring:nth-child(2) { animation-delay: 1.33s; }
+.ripple-ring:nth-child(3) { animation-delay: 2.66s; }
+@keyframes rippleOut {
+  0%   { transform: translate(-50%,-50%) scale(0.5); opacity: 0.7; }
+  100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
+}
+
+/* ── Connection lines (SVG) ── */
+.conn-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.conn-line {
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+  fill: none;
+  animation: dashMove var(--dur) linear infinite;
+}
+.conn-line-green {
+  stroke: rgba(120,230,160,0.12);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+  fill: none;
+  animation: dashMove var(--dur) linear infinite;
+}
+@keyframes dashMove {
+  to { stroke-dashoffset: -40; }
+}
+
+/* ── Floating data cards ── */
+.data-card {
+  background: rgba(255,255,255,0.038);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  padding: 10px 13px;
+  position: absolute;
+  backdrop-filter: blur(6px);
+}
+.dc-label {
+  font-size: 7px;
+  letter-spacing: 0.18em;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.dc-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--w);
+  line-height: 1;
+}
+.dc-sub {
+  font-size: 7px;
+  color: var(--w30);
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+}
+.dc-green { color: var(--green); text-shadow: 0 0 8px var(--green-glow); }
+
+/* card positions */
+.card-bins  { top: 52px;  left: 26px;  width: 105px; }
+.card-co2   { top: 52px;  right: 26px; width: 105px; }
+.card-route { bottom: 105px; left: 26px; width: 115px; }
+
+/* ── Collection efficiency bar ── */
+.eff-bar-wrap {
+  bottom: 105px; right: 26px;
+  width: 118px;
+}
+.eff-row {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 6px;
+}
+.eff-track {
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.eff-fill {
+  height: 100%;
+  border-radius: 2px;
+  animation: effPulse var(--dur) ease-in-out infinite;
+}
+.eff-fill-a { width: 88%; background: linear-gradient(to right, rgba(120,230,160,0.5), rgba(120,230,160,0.9)); box-shadow: 0 0 6px rgba(120,230,160,0.3); }
+.eff-fill-b { width: 61%; background: rgba(255,255,255,0.22); animation-delay: 0.4s; }
+.eff-fill-c { width: 74%; background: rgba(255,255,255,0.15); animation-delay: 0.8s; }
+@keyframes effPulse {
+  0%,100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+.eff-lbl { font-size: 7px; color: var(--w30); letter-spacing: 0.08em; }
+.eff-pct { font-size: 7px; color: var(--w55); }
+
+/* ── Mini map / route panel ── */
+.mini-map {
+  width: 90px; height: 58px;
+  position: relative;
+  margin-top: 6px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 5px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+.map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+.map-route {
+  position: absolute; inset: 0;
+}
+.map-dot {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+}
+.map-dot-a { top: 20%; left: 18%; }
+.map-dot-b { top: 55%; left: 52%; }
+.map-dot-c { top: 22%; left: 80%; }
+/* animated truck dot */
+.map-truck {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 8px rgba(255,255,255,0.5);
+  top: 20%; left: 18%;
+  animation: truckMove var(--dur) linear infinite;
+}
+@keyframes truckMove {
+  0%       { top: 20%; left: 18%; }
+  48%      { top: 55%; left: 52%; }
+  49%,51%  { top: 55%; left: 52%; }
+  100%     { top: 22%; left: 80%; }
+}
+
+/* ── Waveform / telemetry strip ── */
+.wave-wrap {
+  position: absolute;
+  bottom: 68px; left: 0; right: 0;
+  height: 30px;
+  overflow: hidden;
+  opacity: 0.45;
+}
+.wave-svg {
+  width: 200%; height: 100%;
+  animation: waveScroll var(--dur) linear infinite;
+}
+@keyframes waveScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Title divider ── */
+.title-divider {
+  position: absolute;
+  bottom: 62px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent);
+}
+
+/* ── Title block ── */
+.title-block {
+  position: absolute;
+  bottom: 22px; left: 28px; right: 28px;
+}
+.title-eyebrow {
+  font-size: 7px; letter-spacing: 0.26em;
+  color: var(--w30); text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.title-rule {
+  width: 24px; height: 1px;
+  background: rgba(120,230,160,0.4);
+  margin-bottom: 7px;
+}
+.title-main {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 17px;
+  line-height: 1.15; color: var(--w);
+  letter-spacing: -0.01em;
+}
+.title-main em { font-style: normal; color: rgba(255,255,255,0.38); }
+
+/* ── Particles ── */
+.pt {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  animation: ptDrift var(--dur) ease-in-out infinite;
+}
+@keyframes ptDrift {
+  0%,100% { transform: translate(0,0); opacity: 0.3; }
+  50%      { transform: translate(var(--dx),var(--dy)); opacity: 0.65; }
+}
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- bg layers -->
+  <div class="grid"></div>
+  <div class="orb orb-main" style="position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;width:300px;height:300px;top:35%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(120,230,160,0.05) 0%,transparent 70%);animation:orbPulse 4s ease-in-out infinite;"></div>
+  <div class="orb orb-low"  style="position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;width:240px;height:120px;bottom:-20px;left:40%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(100,210,200,0.04) 0%,transparent 70%);animation:orbPulse 4s ease-in-out infinite 1s;"></div>
+
+  <!-- corners -->
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- status -->
+  <div class="status-bar">
+    <div class="status-dot"></div>
+    <span class="status-text">IoT Network · 24 Bins Online</span>
+  </div>
+
+  <!-- scan beam -->
+  <div class="scan-line"></div>
+
+  <!-- particles -->
+  <div class="pt" style="top:28%;left:12%;--dx:-3px;--dy:-5px;animation-delay:0s;"></div>
+  <div class="pt" style="top:60%;left:85%;--dx:3px;--dy:-4px;animation-delay:0.7s;"></div>
+  <div class="pt" style="top:18%;left:70%;--dx:-2px;--dy:4px;animation-delay:1.4s;"></div>
+  <div class="pt" style="top:75%;left:20%;--dx:4px;--dy:-3px;animation-delay:2s;"></div>
+  <div class="pt" style="top:42%;left:92%;--dx:-4px;--dy:2px;animation-delay:0.3s;"></div>
+
+  <!-- SVG connection lines -->
+  <svg class="conn-svg" xmlns="http://www.w3.org/2000/svg">
+    <!-- bins card → bin -->
+    <path class="conn-line" d="M131,90 C180,90 210,180 240,205"/>
+    <!-- co2 card → bin -->
+    <path class="conn-line" d="M389,90 C340,90 310,170 285,200"/>
+    <!-- route card → bin -->
+    <path class="conn-line-green" d="M141,340 C185,320 210,290 240,265"/>
+    <!-- eff card → bin -->
+    <path class="conn-line" d="M379,340 C340,315 310,290 285,260"/>
+    <!-- node dots -->
+    <circle cx="131" cy="90"  r="2.5" fill="rgba(255,255,255,0.20)"/>
+    <circle cx="389" cy="90"  r="2.5" fill="rgba(255,255,255,0.20)"/>
+    <circle cx="141" cy="340" r="2.5" fill="rgba(120,230,160,0.40)"/>
+    <circle cx="379" cy="340" r="2.5" fill="rgba(255,255,255,0.20)"/>
+  </svg>
+
+  <!-- LAYER 1: deep background -->
+  <div class="l1" style="position:absolute;inset:0;">
+    <div style="
+      position:absolute; top:110px; left:50%; transform:translateX(-50%);
+      width:300px; height:260px;
+      background:radial-gradient(ellipse at 50% 40%, rgba(120,230,160,0.025) 0%, transparent 65%);
+      border-radius:40px;
+    "></div>
+  </div>
+
+  <!-- LAYER 2: mid — data cards -->
+  <div class="l2" style="position:absolute;inset:0;">
+
+    <!-- bins online -->
+    <div class="data-card card-bins">
+      <div class="dc-label">Bins Online</div>
+      <div class="dc-value dc-green">24</div>
+      <div class="dc-sub">↑ 2 added today</div>
+    </div>
+
+    <!-- co2 saved -->
+    <div class="data-card card-co2">
+      <div class="dc-label">CO₂ Saved</div>
+      <div class="dc-value">1.8<span style="font-size:11px;color:var(--w30);font-family:'DM Mono'"> t</span></div>
+      <div class="dc-sub">This month</div>
+    </div>
+
+    <!-- route card -->
+    <div class="data-card card-route" style="width:115px;">
+      <div class="dc-label">Live Route</div>
+      <div class="mini-map">
+        <div class="map-grid"></div>
+        <!-- route path -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16,12 Q42,32 48,32 Q70,32 72,13" stroke="rgba(120,230,160,0.25)" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+        </svg>
+        <div class="map-dot map-dot-a"></div>
+        <div class="map-dot map-dot-b"></div>
+        <div class="map-dot map-dot-c"></div>
+        <div class="map-truck"></div>
+      </div>
+      <div class="dc-sub" style="margin-top:4px;">Truck A · ETA 8 min</div>
+    </div>
+
+    <!-- efficiency bars -->
+    <div class="data-card eff-bar-wrap" style="position:absolute;">
+      <div class="dc-label">Collection Eff.</div>
+      <div class="eff-row"><span class="eff-lbl">Organic</span><span class="eff-pct">88%</span></div>
+      <div class="eff-track"><div class="eff-fill eff-fill-a"></div></div>
+      <div class="eff-row"><span class="eff-lbl">Plastic</span><span class="eff-pct">61%</span></div>
+      <div class="eff-track"><div class="eff-fill eff-fill-b"></div></div>
+      <div class="eff-row"><span class="eff-lbl">General</span><span class="eff-pct">74%</span></div>
+      <div class="eff-track"><div class="eff-fill eff-fill-c"></div></div>
+    </div>
+
+  </div>
+
+  <!-- LAYER 3: front — smart bin -->
+  <div class="l3" style="position:absolute;inset:0;">
+
+    <!-- sensor ripple rings -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);">
+      <div class="ripple-ring" style="width:100px;height:100px;"></div>
+      <div class="ripple-ring" style="width:100px;height:100px;"></div>
+      <div class="ripple-ring" style="width:100px;height:100px;"></div>
+    </div>
+
+    <!-- bin -->
+    <div class="bin-wrap">
+      <div class="bin-body">
+        <div class="bin-lid"></div>
+        <div class="bin-container">
+          <div class="bin-lines"></div>
+          <div class="bin-fill">
+            <div class="fill-pct">58%</div>
+          </div>
+          <div class="sensor-strip">
+            <div class="sensor-led"></div>
+            <div class="sensor-led"></div>
+            <div class="sensor-led"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Telemetry waveform -->
+  <div class="wave-wrap">
+    <svg class="wave-svg" viewBox="0 0 1040 30" preserveAspectRatio="none">
+      <polyline
+        points="
+          0,15 25,15 30,15 33,5 36,25 39,8 42,22 45,15 65,15
+          95,15 100,15 103,5 106,25 109,8 112,22 115,15 135,15
+          165,15 170,15 173,5 176,25 179,8 182,22 185,15 205,15
+          235,15 240,15 243,5 246,25 249,8 252,22 255,15 275,15
+          305,15 310,15 313,5 316,25 319,8 322,22 325,15 345,15
+          375,15 380,15 383,5 386,25 389,8 392,22 395,15 415,15
+          445,15 450,15 453,5 456,25 459,8 462,22 465,15 485,15
+          515,15 520,15 523,5 526,25 529,8 532,22 535,15 555,15
+          585,15 590,15 593,5 596,25 599,8 602,22 605,15 625,15
+          655,15 660,15 663,5 666,25 669,8 672,22 675,15 695,15
+          725,15 730,15 733,5 736,25 739,8 742,22 745,15 765,15
+          795,15 800,15 803,5 806,25 809,8 812,22 815,15 835,15
+          865,15 870,15 873,5 876,25 879,8 882,22 885,15 905,15
+          935,15 940,15 943,5 946,25 949,8 952,22 955,15 975,15
+          1005,15 1010,15 1013,5 1016,25 1019,8 1022,22 1025,15 1040,15"
+        fill="none"
+        stroke="rgba(120,230,160,0.5)"
+        stroke-width="1.2"
+        stroke-linejoin="round"
+        style="filter:drop-shadow(0 0 3px rgba(120,230,160,0.3));"
+      />
+    </svg>
+  </div>
+
+  <!-- title divider -->
+  <div class="title-divider"></div>
+
+  <!-- title -->
+  <div class="title-block l3" style="position:absolute;">
+    <div class="title-eyebrow">Portfolio · IoT Infrastructure</div>
+    <div class="title-rule"></div>
+    <div class="title-main">Smart Waste<br><em>Management</em> System</div>
+  </div>
+
+</div>
+
+</body>
+</html>

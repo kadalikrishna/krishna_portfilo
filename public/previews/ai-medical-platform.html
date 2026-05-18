@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Medical Diagnostic Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050608;
+  --w: #ffffff;
+  --w5: rgba(255,255,255,0.05);
+  --w10: rgba(255,255,255,0.10);
+  --w15: rgba(255,255,255,0.15);
+  --w30: rgba(255,255,255,0.30);
+  --w60: rgba(255,255,255,0.60);
+  --glow: rgba(255,255,255,0.06);
+  --accent: rgba(180,220,255,0.9);
+  --accent2: rgba(160,240,200,0.8);
+  --dur: 4s;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #0a0a0c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Stage ── */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 40px 120px rgba(0,0,0,0.9),
+    0 0 80px rgba(180,220,255,0.04);
+}
+
+/* ── Dot grid ── */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+  animation: gridDrift var(--dur) ease-in-out infinite;
+}
+@keyframes gridDrift {
+  0%,100% { transform: translate(0,0); }
+  50%      { transform: translate(-4px, -4px); }
+}
+
+/* ── Ambient glow orb ── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+.orb-center {
+  width: 320px; height: 320px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(200,225,255,0.07) 0%, transparent 70%);
+  animation: orbPulse var(--dur) ease-in-out infinite;
+}
+.orb-bottom {
+  width: 200px; height: 120px;
+  bottom: -20px; left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(160,240,200,0.05) 0%, transparent 70%);
+  animation: orbPulse var(--dur) ease-in-out infinite reverse;
+}
+@keyframes orbPulse {
+  0%,100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.08); }
+}
+.orb-bottom { transform: translateX(-50%); }
+@keyframes orbPulseB {
+  0%,100% { opacity: 0.4; }
+  50%      { opacity: 0.9; }
+}
+
+/* ── LAYER SYSTEM (2.5D) ── */
+.layer { position: absolute; will-change: transform; }
+
+/* Layer 1 — deepest background panel */
+.l1 { animation: l1float var(--dur) ease-in-out infinite; }
+@keyframes l1float {
+  0%,100% { transform: translate(0px, 0px); }
+  50%      { transform: translate(2px, 3px); }
+}
+
+/* Layer 2 — mid panels */
+.l2 { animation: l2float var(--dur) ease-in-out infinite; }
+@keyframes l2float {
+  0%,100% { transform: translate(0px, 0px); }
+  50%      { transform: translate(-4px, -5px); }
+}
+
+/* Layer 3 — front cards */
+.l3 { animation: l3float var(--dur) ease-in-out infinite; }
+@keyframes l3float {
+  0%,100% { transform: translate(0px, 0px); }
+  50%      { transform: translate(-7px, -9px); }
+}
+
+/* ── Deep background rings ── */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.035);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.ring1 { width: 340px; height: 340px; animation: ringPulse var(--dur) ease-in-out infinite; }
+.ring2 { width: 480px; height: 480px; animation: ringPulse var(--dur) ease-in-out infinite 0.5s; border-color: rgba(255,255,255,0.02); }
+@keyframes ringPulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+  50%      { transform: translate(-50%,-50%) scale(1.03); opacity: 1; }
+}
+
+/* ── ECG / Waveform ── */
+.waveform-wrap {
+  position: absolute;
+  bottom: 72px; left: 0; right: 0;
+  height: 36px;
+  overflow: hidden;
+  opacity: 0.55;
+}
+.waveform-svg {
+  width: 200%; height: 100%;
+  animation: waveScroll var(--dur) linear infinite;
+}
+@keyframes waveScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Floating diagnostic cards ── */
+.diag-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  padding: 10px 14px;
+  position: absolute;
+}
+.diag-card .label {
+  font-size: 7px;
+  letter-spacing: 0.18em;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.diag-card .value {
+  font-size: 18px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--w);
+  line-height: 1;
+}
+.diag-card .sub {
+  font-size: 7px;
+  color: var(--w30);
+  margin-top: 3px;
+  letter-spacing: 0.08em;
+}
+
+/* Card: HR — top left */
+.card-hr {
+  top: 44px; left: 30px;
+  width: 110px;
+}
+/* Card: SpO2 — top right */
+.card-spo2 {
+  top: 60px; right: 28px;
+  width: 100px;
+}
+/* Card: Diagnosis — bottom right */
+.card-dx {
+  bottom: 92px; right: 28px;
+  width: 128px;
+}
+
+/* dot indicator */
+.dot-indicator {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+  animation: blinkDot 1.4s ease-in-out infinite;
+}
+.dot-green { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+.dot-blue  { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+@keyframes blinkDot {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+/* ── Central monitor panel ── */
+.monitor {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  padding: 18px 20px;
+  text-align: center;
+}
+.monitor-label {
+  font-size: 7px;
+  letter-spacing: 0.22em;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.monitor-gauge {
+  width: 80px; height: 80px;
+  margin: 0 auto 14px;
+  position: relative;
+}
+.monitor-gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.gauge-bg { stroke: rgba(255,255,255,0.07); stroke-width: 3; fill: none; }
+.gauge-fill {
+  stroke: rgba(200,225,255,0.8);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 188;
+  stroke-dashoffset: 38;
+  filter: drop-shadow(0 0 4px rgba(180,220,255,0.6));
+  animation: gaugePulse var(--dur) ease-in-out infinite;
+}
+@keyframes gaugePulse {
+  0%,100% { stroke-dashoffset: 38; }
+  50%      { stroke-dashoffset: 28; }
+}
+.gauge-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.gauge-pct {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--w);
+}
+.gauge-unit {
+  font-size: 6px;
+  letter-spacing: 0.12em;
+  color: var(--w30);
+  margin-top: 1px;
+}
+.monitor-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+}
+
+/* ── Mini bar chart ── */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 28px;
+  margin-top: 10px;
+}
+.bar {
+  flex: 1;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  animation: barGrow var(--dur) ease-in-out infinite;
+  transform-origin: bottom;
+}
+.bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+.bar:nth-child(2) { height: 70%; animation-delay: 0.15s; }
+.bar:nth-child(3) { height: 55%; animation-delay: 0.3s; }
+.bar:nth-child(4) { height: 90%; background: rgba(180,220,255,0.4); box-shadow: 0 0 8px rgba(180,220,255,0.3); animation-delay: 0.45s; }
+.bar:nth-child(5) { height: 65%; animation-delay: 0.6s; }
+.bar:nth-child(6) { height: 45%; animation-delay: 0.75s; }
+.bar:nth-child(7) { height: 80%; animation-delay: 0.9s; }
+@keyframes barGrow {
+  0%,100% { opacity: 0.6; transform: scaleY(1); }
+  50%      { opacity: 1;   transform: scaleY(1.1); }
+}
+
+/* ── Scan line beam across whole card ── */
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(200,225,255,0.15), transparent);
+  top: 0;
+  animation: scanLine calc(var(--dur) * 1) linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+@keyframes scanLine {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ── Title ── */
+.title-block {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+}
+.title-eyebrow {
+  font-size: 7.5px;
+  letter-spacing: 0.28em;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.title-main {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.15;
+  color: var(--w);
+  letter-spacing: -0.01em;
+}
+.title-main em {
+  font-style: normal;
+  color: rgba(255,255,255,0.4);
+}
+.title-line {
+  width: 28px; height: 1px;
+  background: rgba(255,255,255,0.25);
+  margin-bottom: 8px;
+}
+
+/* ── Horizontal divider in title area ── */
+.title-divider {
+  position: absolute;
+  bottom: 62px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.07) 30%, rgba(255,255,255,0.07) 70%, transparent);
+}
+
+/* ── Corner marks ── */
+.corner { position: absolute; width: 14px; height: 14px; z-index: 5; }
+.corner-tl { top: 16px; left: 16px; border-top: 1px solid var(--w30); border-left: 1px solid var(--w30); }
+.corner-tr { top: 16px; right: 16px; border-top: 1px solid var(--w30); border-right: 1px solid var(--w30); }
+.corner-bl { bottom: 16px; left: 16px; border-bottom: 1px solid var(--w30); border-left: 1px solid var(--w30); }
+.corner-br { bottom: 16px; right: 16px; border-bottom: 1px solid var(--w30); border-right: 1px solid var(--w30); }
+
+/* ── Status bar top ── */
+.status-bar {
+  position: absolute;
+  top: 22px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 8px;
+  z-index: 5;
+}
+.status-text {
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  color: var(--w30);
+  text-transform: uppercase;
+}
+.status-blink {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(160,240,200,0.9);
+  box-shadow: 0 0 8px rgba(160,240,200,0.6);
+  animation: blinkDot 1.4s ease-in-out infinite;
+}
+
+/* ── Particle dots ── */
+.particle {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 50%;
+  animation: particleDrift var(--dur) ease-in-out infinite;
+}
+@keyframes particleDrift {
+  0%,100% { transform: translate(0,0); opacity: 0.35; }
+  50%      { transform: translate(var(--dx), var(--dy)); opacity: 0.7; }
+}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <!-- Background layers -->
+  <div class="grid"></div>
+  <div class="orb orb-center"></div>
+  <div class="orb orb-bottom"></div>
+  <div class="ring ring1"></div>
+  <div class="ring ring2"></div>
+
+  <!-- Scan line -->
+  <div class="scan-line"></div>
+
+  <!-- Corner marks -->
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <div class="status-blink"></div>
+    <span class="status-text">System Active · v3.1</span>
+  </div>
+
+  <!-- Particles -->
+  <div class="particle" style="top:30%;left:15%;--dx:-3px;--dy:-6px;animation-delay:0s;"></div>
+  <div class="particle" style="top:55%;left:80%;--dx:4px;--dy:-4px;animation-delay:0.8s;"></div>
+  <div class="particle" style="top:20%;left:65%;--dx:-2px;--dy:5px;animation-delay:1.5s;"></div>
+  <div class="particle" style="top:70%;left:22%;--dx:5px;--dy:-3px;animation-delay:2.2s;"></div>
+  <div class="particle" style="top:38%;left:90%;--dx:-4px;--dy:2px;animation-delay:0.4s;"></div>
+
+  <!-- LAYER 1: deep background panel -->
+  <div class="layer l1">
+    <!-- subtle background glow panel -->
+    <div style="
+      position:absolute;
+      top:90px; left:60px;
+      width:390px; height:300px;
+      background: radial-gradient(ellipse at 50% 50%, rgba(200,225,255,0.025) 0%, transparent 70%);
+      border-radius: 40px;
+    "></div>
+  </div>
+
+  <!-- LAYER 2: mid — central monitor -->
+  <div class="layer l2" style="inset:0;position:absolute;">
+    <div class="monitor">
+      <div class="monitor-label">Diagnostic Score</div>
+      <div class="monitor-gauge">
+        <svg viewBox="0 0 80 80">
+          <circle class="gauge-bg" cx="40" cy="40" r="30"/>
+          <circle class="gauge-fill" cx="40" cy="40" r="30"/>
+        </svg>
+        <div class="gauge-center">
+          <span class="gauge-pct">94</span>
+          <span class="gauge-unit">ACCURACY</span>
+        </div>
+      </div>
+      <div class="monitor-title">Neural Analysis</div>
+      <div class="bar-chart">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYER 3: front floating cards -->
+  <div class="layer l3" style="inset:0;position:absolute;">
+
+    <!-- HR card -->
+    <div class="diag-card card-hr">
+      <div class="label"><span class="dot-indicator dot-green"></span>Heart Rate</div>
+      <div class="value">72 <span style="font-size:10px;color:var(--w30);font-family:'DM Mono'">bpm</span></div>
+      <div class="sub">Normal sinus rhythm</div>
+    </div>
+
+    <!-- SpO2 card -->
+    <div class="diag-card card-spo2">
+      <div class="label"><span class="dot-indicator dot-blue"></span>SpO₂</div>
+      <div class="value">98<span style="font-size:10px;color:var(--w30);font-family:'DM Mono'">%</span></div>
+      <div class="sub">Optimal range</div>
+    </div>
+
+    <!-- Diagnosis card -->
+    <div class="diag-card card-dx">
+      <div class="label">AI Inference</div>
+      <div style="font-size:10px;font-family:'Syne',sans-serif;font-weight:700;color:var(--w);margin-bottom:5px;">Cardiology</div>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+        <div style="height:3px;flex:1;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:91%;background:linear-gradient(to right,rgba(180,220,255,0.5),rgba(180,220,255,0.9));border-radius:2px;animation:barGrow 4s ease-in-out infinite;"></div>
+        </div>
+        <span style="font-size:7px;color:var(--w60);">91%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <div style="height:3px;flex:1;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:62%;background:rgba(255,255,255,0.25);border-radius:2px;animation:barGrow 4s ease-in-out infinite 0.5s;"></div>
+        </div>
+        <span style="font-size:7px;color:var(--w30);">62%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waveform -->
+  <div class="waveform-wrap">
+    <svg class="waveform-svg" viewBox="0 0 1040 36" preserveAspectRatio="none">
+      <polyline
+        points="
+          0,18 30,18 38,18 42,4 46,32 50,10 54,26 58,18 80,18
+          110,18 118,18 122,4 126,32 130,10 134,26 138,18 160,18
+          190,18 198,18 202,4 206,32 210,10 214,26 218,18 240,18
+          270,18 278,18 282,4 286,32 290,10 294,26 298,18 320,18
+          350,18 358,18 362,4 366,32 370,10 374,26 378,18 400,18
+          430,18 438,18 442,4 446,32 450,10 454,26 458,18 480,18
+          510,18 518,18 522,4 526,32 530,10 534,26 538,18 560,18
+          590,18 598,18 602,4 606,32 610,10 614,26 618,18 640,18
+          670,18 678,18 682,4 686,32 690,10 694,26 698,18 720,18
+          750,18 758,18 762,4 766,32 770,10 774,26 778,18 800,18
+          830,18 838,18 842,4 846,32 850,10 854,26 858,18 880,18
+          910,18 918,18 922,4 926,32 930,10 934,26 938,18 960,18
+          990,18 998,18 1002,4 1006,32 1010,10 1014,26 1018,18 1040,18"
+        fill="none"
+        stroke="rgba(180,220,255,0.4)"
+        stroke-width="1.2"
+        stroke-linejoin="round"
+        style="filter:drop-shadow(0 0 3px rgba(180,220,255,0.3));"
+      />
+    </svg>
+  </div>
+
+  <!-- Title divider -->
+  <div class="title-divider"></div>
+
+  <!-- Title block -->
+  <div class="title-block layer l3">
+    <div class="title-eyebrow">Portfolio · Healthcare AI</div>
+    <div class="title-line"></div>
+    <div class="title-main">AI Medical<br><em>Diagnostic</em> Platform</div>
+  </div>
+
+</div>
+
+</body>
+</html>
