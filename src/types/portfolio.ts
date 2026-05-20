@@ -1,4 +1,4 @@
-export type SocialLinks = {
+﻿export type SocialLinks = {
   github?: string;
   instagram?: string;
   linkedin?: string;
@@ -35,6 +35,8 @@ export type Project = {
   role: string;
   year: string;
   link?: string;
+  github?: string;
+  documentation?: string;
   image?: string;
   highlight: boolean;
 };
@@ -80,3 +82,4 @@ export type Portfolio = {
   achievements: Achievement[];
   certifications: Certification[];
 };
+

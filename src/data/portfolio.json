@@ -1,225 +1,331 @@
-{
-  "profile": {
-    "name": "Kadali Naga Sri Krishna",
-    "shortName": "Kadali Naga Sri Krishna",
-    "tagline": "Python Developer | AI & Backend Enthusiast | Cloud & DevOps Learner",
-    "role": "Computer Science Student",
-    "specialization": "Backend, AI Systems, DevOps, and Product Engineering",
-    "location": "Palakol, Andhra Pradesh, India",
-    "yearsOfExperience": "3+",
-    "aboutHeading": "Building projects and learning by creating.",
-    "bio": "I enjoy building software and AI-based projects using Python and modern web technologies. I have worked on projects involving AI applications, IoT systems, and interactive web platforms. I am currently learning more about cloud technologies, DevOps, and software development while improving my problem-solving and project-building skills.",
-    "avatarSvg": "<svg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop stop-color='#f5f7fb'/><stop offset='0.45' stop-color='#b8c5d9'/><stop offset='1' stop-color='#ff7a3d'/></linearGradient></defs><rect width='240' height='240' rx='64' fill='#111'/><circle cx='120' cy='96' r='46' fill='url(#g)'/><path d='M48 206c10-46 40-72 72-72s62 26 72 72' fill='url(#g)' opacity='0.88'/><path d='M34 45h172v150H34z' fill='none' stroke='rgba(255,255,255,.16)' stroke-width='2'/></svg>",
-    "social": {
-      "github": "https://github.com/kadalikrishna",
-      "instagram": "",
-      "linkedin": "https://www.linkedin.com/in/kadalikrishna",
-      "email": "kadalisrikrishna12@gmail.com",
-      "phone": "8885195185",
-      "website": ""
-    }
-  },
-  "skills": {
-    "categories": [
-      {
-        "name": "Programming Languages",
-        "items": ["Python", "Java (Basics)"]
-      },
-      {
-        "name": "Web Technologies",
-        "items": ["HTML", "CSS", "JavaScript"]
-      },
-      {
-        "name": "Database Technologies",
-        "items": ["SQL", "DBMS"]
-      },
-      {
-        "name": "Core Computer Science",
-        "items": ["Data Structures", "Object-Oriented Programming (OOP)"]
-      },
-      {
-        "name": "DevOps Fundamentals",
-        "items": ["Git", "GitHub", "Version Control", "CI/CD Basics", "Build Automation & Deployment Concepts", "Software Development Life Cycle (SDLC)"]
-      },
-      {
-        "name": "Tools & Platforms",
-        "items": ["Visual Studio Code", "Microsoft Word", "Microsoft PowerPoint"]
-      }
-    ]
-  },
-  "projects": [
-    {
-      "id": "medical-diagnostic-platform",
-      "title": "AI-Powered Medical Diagnostic Platform",
-      "subtitle": "Live AI Healthcare Report Analysis",
-      "description": "Built a web app where users upload medical reports and receive AI-generated insights through the Google Gemini API. Added JWT and bcrypt authentication, stored patient records in PostgreSQL, and used Socket.io for real-time updates.",
-      "stack": ["React.js", "Node.js", "Express", "PostgreSQL", "Socket.io", "Google Gemini API", "Vercel", "Render"],
-      "role": "Full-stack developer",
-      "year": "2025",
-      "link": "https://diagnostic-pi.vercel.app/",
-      "image": "/previews/ai-medical-platform.html",
-      "highlight": true
-    },
-    {
-      "id": "warehouse-robot-simulation",
-      "title": "AI-Based Warehouse Robot Simulation",
-      "subtitle": "Live Autonomous Robot Pathfinding Dashboard",
-      "description": "Simulated autonomous warehouse robots navigating a grid using BFS pathfinding with dynamic obstacle re-routing. Built a live dashboard for task completion, travel distance, and multi-robot collision avoidance metrics.",
-      "stack": ["React.js", "Tailwind CSS", "BFS Algorithm", "Vercel"],
-      "role": "Frontend and simulation developer",
-      "year": "2025",
-      "link": "https://warehouse-dashboard-gules.vercel.app/",
-      "image": "/previews/warehouse-robot-sim.html",
-      "highlight": false
-    },
-    {
-      "id": "datazen",
-      "title": "DataZen",
-      "subtitle": "AI Deepfake Detection Platform",
-      "description": "Developed an AI-powered deepfake detection web application using Python and Flask. Built REST APIs and a responsive dashboard for media analysis and detection results.",
-      "stack": ["Python", "Flask", "REST API", "HTML", "CSS", "JavaScript", "Data Analysis"],
-      "role": "Backend and dashboard developer",
-      "year": "2025",
-      "link": "https://github.com/kadalikrishna/DataZen-IBM-Z-Datathon-2025",
-      "image": "/previews/datazen-card.html",
-      "highlight": false
-    },
-    {
-      "id": "smart-waste-management",
-      "title": "Smart Waste Management and Sanitation System",
-      "subtitle": "IoT Waste Monitoring System",
-      "description": "Developed an IoT-based waste monitoring system using Arduino and ultrasonic sensors. Designed a sensor-based solution to improve waste collection and sanitation management.",
-      "stack": ["IoT", "Arduino", "Ultrasonic Sensor", "Embedded Systems"],
-      "role": "IoT systems developer",
-      "year": "2024",
-      "link": "",
-      "image": "/previews/smart-waste-management.html",
-      "highlight": false
-    }
-  ],
-  "education": [
-    {
-      "institution": "Swarnandhra College of Engineering and Technology",
-      "program": "Pursuing Bachelor of Technology",
-      "period": "Sept 2023 - July 2027",
-      "location": "Andhra Pradesh",
-      "cgpa": "7.5",
-      "coursework": "Computer Science and Engineering"
-    },
-    {
-      "institution": "Narayana Junior College",
-      "program": "Board of Intermediate Education Andhra Pradesh",
-      "period": "June 2021 - April 2023",
-      "location": "Andhra Pradesh",
-      "cgpa": "8.03",
-      "coursework": "MPC"
-    },
-    {
-      "institution": "Raman School of Advanced Education",
-      "program": "Board of Secondary Education Andhra Pradesh",
-      "period": "June 2020 - March 2021",
-      "location": "Andhra Pradesh",
-      "cgpa": "9.8"
-    }
-  ],
-  "achievements": [
-    {
-      "id": "nss-secretary",
-      "title": "NSS Secretary",
-      "role": "National Service Scheme",
-      "summary": "Organized social service activities and college-level events.",
-      "description": "Served as NSS Secretary and helped organize social service activities, special camp sessions, plantation programs, awareness events, and college-level initiatives. Recognized for contribution, coordination, and active participation in community-focused NSS work.",
-      "images": [
-        "/achievements/nss-camp-session.jpeg",
-        "/achievements/nss-plantation.jpeg",
-        "/achievements/nss-group.jpeg",
-        "/achievements/nss-certificate-hand.jpeg",
-        "/achievements/nss-certificate.jpeg"
-      ]
-    },
-    {
-      "id": "atl-mentorship-programme",
-      "title": "ATL Mentorship",
-      "role": "ATL Mentorship Programme",
-      "summary": "Completed a 3-day workshop and mentored school students in hands-on innovation activities.",
-      "description": "Participated in the ATL Mentorship Programme for Higher Education Institution students at JNTUK, Kakinada. Worked with students through practical sessions on electronics, tools, soldering, Arduino basics, and innovation-focused learning activities.",
-      "images": [
-        "/achievements/atl-students-lab.jpeg",
-        "/achievements/atl-class-session.jpeg",
-        "/achievements/atl-workshop.jpeg",
-        "/achievements/atl-group.jpeg",
-        "/achievements/atl-certificate.jpeg"
-      ]
-    }
-  ],
-  "certifications": [
-    {
-      "id": "tata-forage-genai-data-analytics",
-      "title": "GenAI Powered Data Analytics Job Simulation",
-      "issuer": "Tata & Forage",
-      "date": "May 12, 2026",
-      "summary": "Hands-on virtual job simulation focused on AI-driven data analytics and collections strategy.",
-      "description": "Completed a hands-on virtual job simulation focused on AI-driven data analytics and collections strategy. Worked on exploratory data analysis, customer risk profiling, predictive delinquency modeling using AI, and business storytelling for decision-making. Gained practical experience in applying GenAI concepts to real-world financial and collections workflows while developing data-driven problem-solving and analytical thinking skills.",
-      "image": "/certificates/tata-forage-genai.jpeg",
-      "modalImage": "/certificates/tata-forage-genai.jpeg",
-      "verifyUrl": "https://www.theforage.com/completion-certificates/ifobHAoMjQs9s6bKS/gMTdCXwDdLYoXZ3wG_ifobHAoMjQs9s6bKS_6a02f67175becd087b77213a_1778590495851_completion_certificate.pdf"
-    },
-    {
-      "id": "python-essentials-1-cisco",
-      "title": "Python Essentials 1",
-      "issuer": "Cisco Networking Academy & Python Institute",
-      "date": "May 16, 2026",
-      "summary": "Cisco Networking Academy verified badge recognizing foundational proficiency in Python programming.",
-      "description": "Successfully completed the Python Essentials 1 certification program focused on core Python programming fundamentals. Learned problem-solving through algorithms, Python syntax and semantics, debugging, script development, and foundational software development concepts. Built a strong understanding of programming logic, control structures, functions, and the Python Standard Library for real-world application development. Earned an official verified badge from Cisco Networking Academy recognizing foundational proficiency in Python programming, algorithmic thinking, debugging, and software development basics.",
-      "image": "/certificates/python-essentials-1-certificate.jpeg",
-      "modalImage": "/certificates/python-essentials-1-certificate.jpeg",
-      "badgeImage": "/certificates/python-essentials-1-badge.png",
-      "verifyUrl": "https://www.credly.com/badges/bb1e2981-73d0-4e16-8e94-dee60d2efb58/public_url"
-    },
-    {
-      "id": "nptel-ai-for-management",
-      "title": "Artificial Intelligence (AI) for Management",
-      "issuer": "NPTEL | IIT Madras",
-      "date": "Jan - Apr 2026",
-      "summary": "Elite certified 12-week NPTEL program with a consolidated score of 75%.",
-      "description": "Successfully completed the NPTEL-certified course Artificial Intelligence (AI) for Management offered by IIT Madras. Gained foundational knowledge in AI concepts, machine learning applications, data-driven decision-making, and the role of AI in modern business and management strategies. Developed an understanding of how AI technologies can optimize operations, improve analytics, and support intelligent business solutions. Earned an Elite Certification with a consolidated score of 75% in the 12-week NPTEL program, demonstrating strong performance in assignments and proctored examinations.",
-      "image": "/certificates/nptel-ai-management.jpeg",
-      "modalImage": "/certificates/nptel-ai-management.jpeg",
-      "verifyUrl": ""
-    },
-    {
-      "id": "nptel-vr-ar-systems",
-      "title": "Foundation for Virtual and Augmented Reality Systems",
-      "issuer": "NPTEL | IIT Guwahati",
-      "date": "Jan - Apr 2026",
-      "summary": "Elite certified 12-week NPTEL program with a consolidated score of 75%.",
-      "description": "Successfully completed the NPTEL-certified course Foundation for Virtual and Augmented Reality Systems offered by IIT Guwahati. Learned the core concepts of Virtual Reality (VR) and Augmented Reality (AR), including immersive technologies, 3D interaction systems, rendering fundamentals, tracking techniques, and real-world applications of XR technologies across industries. Earned an Elite Certification with a consolidated score of 75% in the 12-week NPTEL program, demonstrating strong understanding and performance in VR/AR system fundamentals and practical assessments.",
-      "image": "/certificates/nptel-vr-ar-systems.jpeg",
-      "modalImage": "/certificates/nptel-vr-ar-systems.jpeg",
-      "verifyUrl": ""
-    },
-    {
-      "id": "redhat-linux-fundamentals-rh104",
-      "title": "Red Hat Linux Fundamentals (RH104)",
-      "issuer": "Red Hat Training",
-      "date": "December 21, 2025",
-      "summary": "Completed 16 credit hours of practical Linux fundamentals and command-line training.",
-      "description": "Completed the Getting Started with Linux Fundamentals (RH104 - RHA) training program by Red Hat. Learned core Linux concepts including command-line operations, file system navigation, user and permission management, package handling, process management, and essential system administration basics. Developed foundational skills for working in Linux-based development and enterprise environments. Successfully completed 16 credit hours of Red Hat training focused on practical Linux fundamentals and command-line proficiency.",
-      "image": "/certificates/redhat-linux-fundamentals.jpeg",
-      "modalImage": "/certificates/redhat-linux-fundamentals.jpeg",
-      "verifyUrl": "https://www.credly.com/badges/7cf86cab-d55d-4dfe-94b0-a5e6fbc3b31e/public_url"
-    },
-    {
-      "id": "cisco-apply-ai-customer-reviews",
-      "title": "Apply AI: Analyze Customer Reviews",
-      "issuer": "Cisco Networking Academy",
-      "date": "May 12, 2026",
-      "summary": "Verified Cisco badge for AI-assisted customer review analysis and data-processing workflows.",
-      "description": "Completed the Apply AI: Analyze Customer Reviews course focused on using AI tools and data analysis techniques to process and interpret customer feedback. Learned how to work with tabular data using AI-assisted tools, apply spreadsheet-based analysis, create data-processing workflows, and use AI chatbots to automate and support decision-making processes. Developed practical skills in AI-powered customer insights and human-in-the-loop evaluation systems. Earned an official verified badge recognizing practical skills in AI-assisted customer review analysis, data processing, spreadsheet automation, and AI-supported business decision workflows.",
-      "image": "/certificates/cisco-apply-ai-customer-reviews.jpeg",
-      "modalImage": "/certificates/cisco-apply-ai-customer-reviews.jpeg",
-      "badgeImage": "/certificates/cisco-apply-ai-customer-reviews-badge.png",
-      "verifyUrl": "https://www.credly.com/badges/c9f56297-51cf-4f86-b96c-70aa6995ceef/public_url"
-    }
-  ]
+﻿{
+    "profile":  {
+                    "name":  "Kadali Naga Sri Krishna",
+                    "shortName":  "Kadali Naga Sri Krishna",
+                    "tagline":  "Python Developer | AI \u0026 Backend Enthusiast | Cloud \u0026 DevOps Learner",
+                    "role":  "Computer Science Student",
+                    "specialization":  "Backend, AI Systems, DevOps, and Product Engineering",
+                    "location":  "Palakol, Andhra Pradesh, India",
+                    "yearsOfExperience":  "3+ Projects",
+                    "aboutHeading":  "Building projects and learning by creating.",
+                    "bio":  "I enjoy building software and AI-based projects using Python and modern web technologies. I have worked on projects involving AI applications, IoT systems, and interactive web platforms. I am currently learning more about cloud technologies, DevOps, and software development while improving my problem-solving and project-building skills.",
+                    "avatarSvg":  "\u003csvg viewBox=\u00270 0 240 240\u0027 xmlns=\u0027http://www.w3.org/2000/svg\u0027\u003e\u003cdefs\u003e\u003clinearGradient id=\u0027g\u0027 x1=\u00270\u0027 x2=\u00271\u0027 y1=\u00270\u0027 y2=\u00271\u0027\u003e\u003cstop stop-color=\u0027#f5f7fb\u0027/\u003e\u003cstop offset=\u00270.45\u0027 stop-color=\u0027#b8c5d9\u0027/\u003e\u003cstop offset=\u00271\u0027 stop-color=\u0027#ff7a3d\u0027/\u003e\u003c/linearGradient\u003e\u003c/defs\u003e\u003crect width=\u0027240\u0027 height=\u0027240\u0027 rx=\u002764\u0027 fill=\u0027#111\u0027/\u003e\u003ccircle cx=\u0027120\u0027 cy=\u002796\u0027 r=\u002746\u0027 fill=\u0027url(#g)\u0027/\u003e\u003cpath d=\u0027M48 206c10-46 40-72 72-72s62 26 72 72\u0027 fill=\u0027url(#g)\u0027 opacity=\u00270.88\u0027/\u003e\u003cpath d=\u0027M34 45h172v150H34z\u0027 fill=\u0027none\u0027 stroke=\u0027rgba(255,255,255,.16)\u0027 stroke-width=\u00272\u0027/\u003e\u003c/svg\u003e",
+                    "social":  {
+                                   "github":  "https://github.com/kadalikrishna",
+                                   "instagram":  "",
+                                   "linkedin":  "https://www.linkedin.com/in/kadalikrishna",
+                                   "email":  "kadalisrikrishna12@gmail.com",
+                                   "phone":  "8885195185",
+                                   "website":  ""
+                               }
+                },
+    "skills":  {
+                   "categories":  [
+                                      {
+                                          "name":  "Programming Languages",
+                                          "items":  [
+                                                        "Python",
+                                                        "Java (Basics)"
+                                                    ]
+                                      },
+                                      {
+                                          "name":  "Web Technologies",
+                                          "items":  [
+                                                        "HTML",
+                                                        "CSS",
+                                                        "JavaScript"
+                                                    ]
+                                      },
+                                      {
+                                          "name":  "Database Technologies",
+                                          "items":  [
+                                                        "SQL",
+                                                        "DBMS"
+                                                    ]
+                                      },
+                                      {
+                                          "name":  "Core Computer Science",
+                                          "items":  [
+                                                        "Data Structures",
+                                                        "Object-Oriented Programming (OOP)"
+                                                    ]
+                                      },
+                                      {
+                                          "name":  "DevOps Fundamentals",
+                                          "items":  [
+                                                        "Git",
+                                                        "GitHub",
+                                                        "Version Control",
+                                                        "CI/CD Basics",
+                                                        "Build Automation \u0026 Deployment Concepts",
+                                                        "Software Development Life Cycle (SDLC)"
+                                                    ]
+                                      },
+                                      {
+                                          "name":  "Tools \u0026 Platforms",
+                                          "items":  [
+                                                        "Visual Studio Code",
+                                                        "Microsoft Word",
+                                                        "Microsoft PowerPoint"
+                                                    ]
+                                      }
+                                  ]
+               },
+    "projects":  [
+                     {
+                         "id":  "medical-diagnostic-platform",
+                         "title":  "AI-Powered Medical Diagnostic Platform",
+                         "subtitle":  "Live AI Healthcare Report Analysis",
+                         "description":  "Built a web app where users upload medical reports and receive AI-generated insights through the Google Gemini API. Added JWT and bcrypt authentication, stored patient records in PostgreSQL, and used Socket.io for real-time updates.",
+                         "stack":  [
+                                       "React.js",
+                                       "Node.js",
+                                       "Express",
+                                       "PostgreSQL",
+                                       "Socket.io",
+                                       "Google Gemini API",
+                                       "Vercel",
+                                       "Render"
+                                   ],
+                         "role":  "Full-stack developer",
+                         "year":  "2025",
+                         "link":  "https://diagnostic-pi.vercel.app/",
+                         "image":  "/previews/ai-medical-platform.html",
+                         "highlight":  true,
+                         "github":  "https://github.com/kadalikrishna/AI-Powered-Medical-Diagnostic-Platform/tree/main",
+                         "documentation":  ""
+                     },
+                     {
+                         "id":  "warehouse-robot-simulation",
+                         "title":  "AI-Based Warehouse Robot Simulation",
+                         "subtitle":  "Live Autonomous Robot Pathfinding Dashboard",
+                         "description":  "Simulated autonomous warehouse robots navigating a grid using BFS pathfinding with dynamic obstacle re-routing. Built a live dashboard for task completion, travel distance, and multi-robot collision avoidance metrics.",
+                         "stack":  [
+                                       "React.js",
+                                       "Tailwind CSS",
+                                       "BFS Algorithm",
+                                       "Vercel"
+                                   ],
+                         "role":  "Frontend and simulation developer",
+                         "year":  "2025",
+                         "link":  "https://warehouse-dashboard-gules.vercel.app/",
+                         "image":  "/previews/warehouse-robot-sim.html",
+                         "highlight":  false,
+                         "github":  "https://github.com/kadalikrishna/warehouse-robot-simulation/tree/main",
+                         "documentation":  "https://docs.google.com/document/d/1HOB1VbGSJGVlLzKPWxktkgDpJUAQtZ-G/edit?usp=drivesdk\u0026ouid=101325136574629494932\u0026rtpof=true\u0026sd=true"
+                     },
+                     {
+                         "id":  "datazen",
+                         "title":  "DataZen",
+                         "subtitle":  "AI Deepfake Detection Platform",
+                         "description":  "Developed an AI-powered deepfake detection web application using Python and Flask. Built REST APIs and a responsive dashboard for media analysis and detection results.",
+                         "stack":  [
+                                       "Python",
+                                       "Flask",
+                                       "REST API",
+                                       "HTML",
+                                       "CSS",
+                                       "JavaScript",
+                                       "Data Analysis"
+                                   ],
+                         "role":  "Backend and dashboard developer",
+                         "year":  "2025",
+                         "link":  "https://github.com/kadalikrishna/DataZen-IBM-Z-Datathon-2025",
+                         "image":  "/previews/datazen-card.html",
+                         "highlight":  false,
+                         "github":  "https://github.com/kadalikrishna/DataZen-IBM-Z-Datathon-2025",
+                         "documentation":  "https://docs.google.com/document/d/126VJq3avVxn8NIkW74iYtBIEPY0V1BnT/edit?usp=drivesdk\u0026ouid=101325136574629494932\u0026rtpof=true\u0026sd=true"
+                     },
+                     {
+                         "id":  "smart-waste-management",
+                         "title":  "Smart Waste Management and Sanitation System",
+                         "subtitle":  "IoT Waste Monitoring System",
+                         "description":  "Developed an IoT-based waste monitoring system using Arduino and ultrasonic sensors. Designed a sensor-based solution to improve waste collection and sanitation management.",
+                         "stack":  [
+                                       "IoT",
+                                       "Arduino",
+                                       "Ultrasonic Sensor",
+                                       "Embedded Systems"
+                                   ],
+                         "role":  "IoT systems developer",
+                         "year":  "2024",
+                         "link":  "",
+                         "image":  "/previews/smart-waste-management.html",
+                         "highlight":  false,
+                         "github":  "",
+                         "documentation":  ""
+                     }
+                 ],
+    "education":  [
+                      {
+                          "institution":  "Swarnandhra College of Engineering and Technology",
+                          "program":  "Pursuing Bachelor of Technology",
+                          "period":  "Sept 2023 - July 2027",
+                          "location":  "Andhra Pradesh",
+                          "cgpa":  "7.5",
+                          "coursework":  "Computer Science and Engineering"
+                      },
+                      {
+                          "institution":  "Narayana Junior College",
+                          "program":  "Board of Intermediate Education Andhra Pradesh",
+                          "period":  "June 2021 - April 2023",
+                          "location":  "Andhra Pradesh",
+                          "cgpa":  "8.03",
+                          "coursework":  "MPC"
+                      },
+                      {
+                          "institution":  "Raman School of Advanced Education",
+                          "program":  "Board of Secondary Education Andhra Pradesh",
+                          "period":  "June 2020 - March 2021",
+                          "location":  "Andhra Pradesh",
+                          "cgpa":  "9.8"
+                      }
+                  ],
+    "achievements":  [
+                         {
+                             "id":  "nss-secretary",
+                             "title":  "NSS Secretary",
+                             "role":  "National Service Scheme",
+                             "summary":  "Organized social service activities and college-level events.",
+                             "description":  "Served as NSS Secretary and helped organize social service activities, special camp sessions, plantation programs, awareness events, and college-level initiatives. Recognized for contribution, coordination, and active participation in community-focused NSS work.",
+                             "images":  [
+                                            "/achievements/nss-group.jpeg",
+                                            "/achievements/nss-camp-session.jpeg",
+                                            "/achievements/nss-plantation.jpeg",
+                                            "/achievements/nss-certificate-hand.jpeg",
+                                            "/achievements/nss-certificate.jpeg"
+                                        ]
+                         },
+                         {
+                             "id":  "atl-mentorship-programme",
+                             "title":  "ATL Mentorship",
+                             "role":  "ATL Mentorship Programme",
+                             "summary":  "Completed a 3-day workshop and mentored school students in hands-on innovation activities.",
+                             "description":  "Participated in the ATL Mentorship Programme for Higher Education Institution students at JNTUK, Kakinada. Worked with students through practical sessions on electronics, tools, soldering, Arduino basics, and innovation-focused learning activities.",
+                             "images":  [
+                                            "/achievements/atl-students-lab.jpeg",
+                                            "/achievements/atl-certificate.jpeg",
+                                            "/achievements/atl-workshop.jpeg",
+                                            "/achievements/atl-class-session.jpeg",
+                                            "/achievements/atl-group.jpeg"
+                                        ]
+                         },
+                         {
+                             "id":  "technical-quiz-winner",
+                             "title":  "Technical Quiz Winner",
+                             "role":  "Technical Fest Achievement",
+                             "summary":  "Secured 1st prize in Technical Quiz competitions during 2nd and 3rd year technical fests.",
+                             "description":  "Secured first prize in technical quiz competitions across college technical fests, showing strong fundamentals, quick technical reasoning, and consistent competitive performance.",
+                             "images":  [
+                                            "/achievements/technical-quiz-cover.jpeg",
+                                            "/achievements/quiz-certificate-2024.jpeg",
+                                            "/achievements/quiz-certificate-2025.jpeg"
+                                        ]
+                         },
+                         {
+                             "id":  "best-coordinator-startup-competition",
+                             "title":  "Best Coordinator",
+                             "role":  "Entrepreneurship Development Cell",
+                             "summary":  "Recognized for coordinating a Startup Competition conducted by the Entrepreneurship Development Cell.",
+                             "description":  "Recognized as Best Coordinator for supporting the planning, coordination, and smooth execution of a Startup Competition conducted by the Entrepreneurship Development Cell.",
+                             "images":  [
+                                            "/achievements/best-coordinator-certificate.jpeg"
+                                        ]
+                         },
+                         {
+                             "id":  "nss-camp-news-feature",
+                             "title":  "NSS Camp News Feature",
+                             "role":  "Community Service Recognition",
+                             "summary":  "Featured in a news article for NSS camp leadership, service activities, and youth-led community work.",
+                             "description":  "Featured in a local news article for active participation in the NSS special camp. The work focused on community awareness, service activities, plantation, rural development, and student-led social responsibility during the camp.",
+                             "images":  [
+                                            "/achievements/nss-camp-news-cover.jpeg",
+                                            "/achievements/nss-camp-meeting.jpeg",
+                                            "/achievements/nss-camp-group-cover-support.jpeg"
+                                        ]
+                         },
+                         {
+                             "id":  "teamx-national-hackathon",
+                             "title":  "TeamX Hackathon Lead",
+                             "role":  "National-Level Hackathon",
+                             "summary":  "Led TeamX to a Top 4 position among 40 teams in the Design to Build Challenge 2026.",
+                             "description":  "Led TeamX to a Top 4 position among 40 teams in the Design to Build Challenge 2026, a national-level hackathon powered by ASME and hosted at Swarnandhra College of Engineering and Technology, Narasapuram. Coming from a Computer Science background, this challenge opened the door to robotics, system design, and real-world engineering problem solving beyond the core software domain. As team lead, coordinated the group through ideation, execution, testing, and presentation while learning the value of cross-domain collaboration and practical innovation.",
+                             "images":  [
+                                            "/achievements/teamx-hackathon-stage.jpeg",
+                                            "/achievements/teamx-hackathon-faculty.jpeg",
+                                            "/achievements/teamx-hackathon-cover-wide.jpeg",
+                                            "/achievements/teamx-hackathon-certificate.jpeg"
+                                        ]
+                         }
+                     ],
+    "certifications":  [
+                           {
+                               "id":  "tata-forage-genai-data-analytics",
+                               "title":  "GenAI Powered Data Analytics Job Simulation",
+                               "issuer":  "Tata \u0026 Forage",
+                               "date":  "May 12, 2026",
+                               "summary":  "Hands-on virtual job simulation focused on AI-driven data analytics and collections strategy.",
+                               "description":  "Completed a hands-on virtual job simulation focused on AI-driven data analytics and collections strategy. Worked on exploratory data analysis, customer risk profiling, predictive delinquency modeling using AI, and business storytelling for decision-making. Gained practical experience in applying GenAI concepts to real-world financial and collections workflows while developing data-driven problem-solving and analytical thinking skills.",
+                               "image":  "/certificates/tata-forage-genai.jpeg",
+                               "modalImage":  "/certificates/tata-forage-genai.jpeg",
+                               "verifyUrl":  "https://www.theforage.com/completion-certificates/ifobHAoMjQs9s6bKS/gMTdCXwDdLYoXZ3wG_ifobHAoMjQs9s6bKS_6a02f67175becd087b77213a_1778590495851_completion_certificate.pdf"
+                           },
+                           {
+                               "id":  "python-essentials-1-cisco",
+                               "title":  "Python Essentials 1",
+                               "issuer":  "Cisco Networking Academy \u0026 Python Institute",
+                               "date":  "May 16, 2026",
+                               "summary":  "Cisco Networking Academy verified badge recognizing foundational proficiency in Python programming.",
+                               "description":  "Successfully completed the Python Essentials 1 certification program focused on core Python programming fundamentals. Learned problem-solving through algorithms, Python syntax and semantics, debugging, script development, and foundational software development concepts. Built a strong understanding of programming logic, control structures, functions, and the Python Standard Library for real-world application development. Earned an official verified badge from Cisco Networking Academy recognizing foundational proficiency in Python programming, algorithmic thinking, debugging, and software development basics.",
+                               "image":  "/certificates/python-essentials-1-certificate.jpeg",
+                               "modalImage":  "/certificates/python-essentials-1-certificate.jpeg",
+                               "badgeImage":  "/certificates/python-essentials-1-badge.png",
+                               "verifyUrl":  "https://www.credly.com/badges/bb1e2981-73d0-4e16-8e94-dee60d2efb58/public_url"
+                           },
+                           {
+                               "id":  "nptel-ai-for-management",
+                               "title":  "Artificial Intelligence (AI) for Management",
+                               "issuer":  "NPTEL | IIT Madras",
+                               "date":  "Jan - Apr 2026",
+                               "summary":  "Elite certified 12-week NPTEL program with a consolidated score of 75%.",
+                               "description":  "Successfully completed the NPTEL-certified course Artificial Intelligence (AI) for Management offered by IIT Madras. Gained foundational knowledge in AI concepts, machine learning applications, data-driven decision-making, and the role of AI in modern business and management strategies. Developed an understanding of how AI technologies can optimize operations, improve analytics, and support intelligent business solutions. Earned an Elite Certification with a consolidated score of 75% in the 12-week NPTEL program, demonstrating strong performance in assignments and proctored examinations.",
+                               "image":  "/certificates/nptel-ai-management.jpeg",
+                               "modalImage":  "/certificates/nptel-ai-management.jpeg",
+                               "verifyUrl":  ""
+                           },
+                           {
+                               "id":  "nptel-vr-ar-systems",
+                               "title":  "Foundation for Virtual and Augmented Reality Systems",
+                               "issuer":  "NPTEL | IIT Guwahati",
+                               "date":  "Jan - Apr 2026",
+                               "summary":  "Elite certified 12-week NPTEL program with a consolidated score of 75%.",
+                               "description":  "Successfully completed the NPTEL-certified course Foundation for Virtual and Augmented Reality Systems offered by IIT Guwahati. Learned the core concepts of Virtual Reality (VR) and Augmented Reality (AR), including immersive technologies, 3D interaction systems, rendering fundamentals, tracking techniques, and real-world applications of XR technologies across industries. Earned an Elite Certification with a consolidated score of 75% in the 12-week NPTEL program, demonstrating strong understanding and performance in VR/AR system fundamentals and practical assessments.",
+                               "image":  "/certificates/nptel-vr-ar-systems.jpeg",
+                               "modalImage":  "/certificates/nptel-vr-ar-systems.jpeg",
+                               "verifyUrl":  ""
+                           },
+                           {
+                               "id":  "redhat-linux-fundamentals-rh104",
+                               "title":  "Red Hat Linux Fundamentals (RH104)",
+                               "issuer":  "Red Hat Training",
+                               "date":  "December 21, 2025",
+                               "summary":  "Completed 16 credit hours of practical Linux fundamentals and command-line training.",
+                               "description":  "Completed the Getting Started with Linux Fundamentals (RH104 - RHA) training program by Red Hat. Learned core Linux concepts including command-line operations, file system navigation, user and permission management, package handling, process management, and essential system administration basics. Developed foundational skills for working in Linux-based development and enterprise environments. Successfully completed 16 credit hours of Red Hat training focused on practical Linux fundamentals and command-line proficiency.",
+                               "image":  "/certificates/redhat-linux-fundamentals.jpeg",
+                               "modalImage":  "/certificates/redhat-linux-fundamentals.jpeg",
+                               "verifyUrl":  "https://www.credly.com/badges/7cf86cab-d55d-4dfe-94b0-a5e6fbc3b31e/public_url"
+                           },
+                           {
+                               "id":  "cisco-apply-ai-customer-reviews",
+                               "title":  "Apply AI: Analyze Customer Reviews",
+                               "issuer":  "Cisco Networking Academy",
+                               "date":  "May 12, 2026",
+                               "summary":  "Verified Cisco badge for AI-assisted customer review analysis and data-processing workflows.",
+                               "description":  "Completed the Apply AI: Analyze Customer Reviews course focused on using AI tools and data analysis techniques to process and interpret customer feedback. Learned how to work with tabular data using AI-assisted tools, apply spreadsheet-based analysis, create data-processing workflows, and use AI chatbots to automate and support decision-making processes. Developed practical skills in AI-powered customer insights and human-in-the-loop evaluation systems. Earned an official verified badge recognizing practical skills in AI-assisted customer review analysis, data processing, spreadsheet automation, and AI-supported business decision workflows.",
+                               "image":  "/certificates/cisco-apply-ai-customer-reviews.jpeg",
+                               "modalImage":  "/certificates/cisco-apply-ai-customer-reviews.jpeg",
+                               "badgeImage":  "/certificates/cisco-apply-ai-customer-reviews-badge.png",
+                               "verifyUrl":  "https://www.credly.com/badges/c9f56297-51cf-4f86-b96c-70aa6995ceef/public_url"
+                           }
+                       ]
 }

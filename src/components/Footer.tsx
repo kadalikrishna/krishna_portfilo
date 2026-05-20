@@ -1,12 +1,15 @@
-import { Copy } from "lucide-react";
+﻿import { Copy } from "lucide-react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import { SocialLinks } from "./SocialLinks";
 
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Education", href: "#education" },
+  { label: "Achievements", href: "#achievements" },
+  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -38,7 +41,7 @@ export function Footer() {
         </div>
         <div>
           <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-zinc-500">Navigate</h3>
-          <div className="mt-5 grid gap-3">
+          <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3">
             {navItems.map((item) => (
               <a key={item.href} href={item.href} className="text-zinc-300 transition hover:text-white">
                 {item.label}
@@ -69,3 +72,7 @@ export function Footer() {
     </footer>
   );
 }
+
+
+
+

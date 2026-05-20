@@ -1,11 +1,11 @@
-import { Linkedin } from "lucide-react";
+﻿import { Linkedin } from "lucide-react";
 import { usePortfolio } from "../hooks/usePortfolio";
 
 const navItems = [
   { label: "HOME", href: "#home" },
   { label: "ABOUT", href: "#about" },
-  { label: "SKILLS", href: "#skills" },
   { label: "PROJECTS", href: "#projects" },
+  { label: "SKILLS", href: "#skills" },
   { label: "CONTACT", href: "#contact" },
 ];
 
@@ -26,12 +26,12 @@ export function Navbar() {
           <Linkedin className="h-4 w-4" />
           <span className="hidden sm:inline">LinkedIn</span>
         </a>
-        <div className="site-nav-scroll flex max-w-[calc(100vw-86px)] items-center gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/[0.04] p-1 sm:max-w-none">
+        <div className="site-nav-scroll flex max-w-[calc(100vw-86px)] items-center gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/[0.04] p-1 sm:max-w-[min(78vw,820px)]">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="rounded-full px-3 py-2 text-xs font-semibold text-zinc-400 transition hover:bg-white/10 hover:text-white sm:px-4"
+              className="whitespace-nowrap rounded-full px-3 py-2 text-xs font-semibold text-zinc-400 transition hover:bg-white/10 hover:text-white sm:px-4"
             >
               {item.label}
             </a>
@@ -41,3 +41,7 @@ export function Navbar() {
     </header>
   );
 }
+
+
+
+

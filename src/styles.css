@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -70,7 +70,7 @@ section {
 .hero-name {
   width: min(100%, 1180px);
   white-space: normal;
-  font-size: clamp(2.2rem, 10vw, 6.5rem);
+  font-size: clamp(2rem, 9.2vw, 6.5rem);
 }
 
 @media (min-width: 768px) {
@@ -206,3 +206,18 @@ section {
     animation: none !important;
   }
 }
+
+
+
+.project-modal-scroll {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  will-change: scroll-position;
+}
+
+.project-modal-scroll iframe,
+.project-html-preview iframe {
+  display: block;
+  background: #050505;
+}
+

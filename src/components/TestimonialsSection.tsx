@@ -1,112 +1,132 @@
-import { useRef, useState } from "react";
-import { Award, BrainCircuit, HandHeart, Sparkles } from "lucide-react";
+﻿import { AnimatePresence, motion } from "framer-motion";
+import { Award, BrainCircuit, HandHeart, Newspaper, Rocket, Trophy, Users, X } from "lucide-react";
+import { useState } from "react";
 import { usePortfolio } from "../hooks/usePortfolio";
+import type { Achievement } from "../types/portfolio";
+
+const iconForAchievement = (id: string) => {
+  if (id.includes("quiz")) return Trophy;
+  if (id.includes("coordinator")) return Users;
+  if (id.includes("news")) return Newspaper;
+  if (id.includes("hackathon")) return Rocket;
+  if (id.includes("atl")) return BrainCircuit;
+  return HandHeart;
+};
 
 export function TestimonialsSection() {
   const { achievements } = usePortfolio();
-  const [activeAchievementId, setActiveAchievementId] = useState<string | null>(null);
-  const rowRef = useRef<HTMLDivElement>(null);
-
-  const openAchievement = (achievementId: string, card: HTMLButtonElement) => {
-    const willOpen = activeAchievementId !== achievementId;
-
-    setActiveAchievementId(willOpen ? achievementId : null);
-
-    if (!willOpen) {
-      return;
-    }
-
-    window.setTimeout(() => {
-      rowRef.current?.scrollTo({
-        left: Math.max(card.offsetLeft - 16, 0),
-        behavior: "smooth",
-      });
-    }, 250);
-  };
+  const [selected, setSelected] = useState<Achievement | null>(null);
 
   return (
-    <section className="section-offset overflow-hidden bg-[#070707] px-5 py-28 lg:px-8" id="achievements">
+    <section className="section-offset overflow-hidden bg-[#070707] px-5 pb-36 pt-40 lg:px-8" id="achievements">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex items-center justify-between gap-6">
+        <div className="mb-12 flex items-center justify-between gap-6">
           <div>
             <p className="section-kicker">Achievements</p>
             <h2 className="hero-heading text-5xl font-semibold leading-none md:text-7xl">Highlights Beyond Academics.</h2>
           </div>
           <div className="hidden gap-3 text-zinc-500 md:flex">
-            <Sparkles className="h-7 w-7" />
-            <HandHeart className="h-7 w-7" />
             <Award className="h-7 w-7" />
+            <Trophy className="h-7 w-7" />
+            <Rocket className="h-7 w-7" />
           </div>
         </div>
 
-        {achievements.length ? (
-          <div ref={rowRef} className="overflow-x-auto pb-4">
-            <div className="flex min-w-max items-start">
-              {achievements.map((achievement, index) => {
-                const isActive = achievement.id === activeAchievementId;
-                const Icon = achievement.id.includes("atl") ? BrainCircuit : HandHeart;
-                const joinedCardShape =
-                  achievements.length === 1
-                    ? "rounded-[1.75rem]"
-                    : index === 0
-                      ? "rounded-l-[1.75rem] rounded-r-none"
-                      : index === achievements.length - 1
-                        ? "rounded-l-none rounded-r-[1.75rem]"
-                        : "rounded-none";
-                const cardShape = isActive ? "rounded-[1.75rem]" : joinedCardShape;
+        <div className="flex gap-6 overflow-x-auto pb-4 md:gap-7">
+          {achievements.map((achievement) => {
+            const Icon = iconForAchievement(achievement.id);
+            const previewImage = achievement.images[0];
 
-                return (
-                  <div key={achievement.id} className="relative flex items-stretch">
-                    <button
-                      type="button"
-                      aria-expanded={isActive}
-                      onClick={(event) => openAchievement(achievement.id, event.currentTarget)}
-                      className={`relative z-10 min-h-[430px] w-[330px] border p-6 text-left transition duration-500 md:w-[430px] md:p-8 ${cardShape} ${
-                        isActive
-                          ? "border-white/15 bg-[#111111] shadow-2xl shadow-black/40"
-                          : "border-white/10 bg-white/[0.035] hover:border-white/20 hover:bg-white/[0.055]"
-                      }`}
-                    >
-                      <span className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-zinc-100">
-                        <Icon className="h-6 w-6" />
-                      </span>
-                      <span className="block text-sm font-semibold uppercase tracking-[0.25em] text-zinc-500">{achievement.role}</span>
-                      <span className="mt-4 block text-4xl font-semibold leading-tight text-zinc-100 md:text-5xl">{achievement.title}</span>
-                      <span className="mt-5 block text-xl leading-8 text-zinc-200">{achievement.summary}</span>
-                      <span className="mt-5 block text-base leading-8 text-zinc-400">{achievement.description}</span>
-                    </button>
-
-                    <div className={`relative z-0 flex gap-5 transition-all duration-700 ease-out ${isActive ? "w-[1780px] translate-x-0 opacity-100" : "w-0 -translate-x-[92%] overflow-hidden opacity-0"}`}>
-                      {achievement.images.map((image, index) => (
-                        <figure
-                          key={image}
-                          className="group h-[430px] min-w-[330px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.035] md:min-w-[340px]"
-                          style={{ transitionDelay: isActive ? `${index * 70}ms` : "0ms" }}
-                        >
-                          <div className="relative h-full overflow-hidden bg-[#050505]">
-                            <img
-                              src={image}
-                              alt=""
-                              aria-hidden="true"
-                              className="absolute inset-0 h-full w-full scale-110 object-cover opacity-35 blur-xl"
-                            />
-                            <img
-                              src={image}
-                              alt={achievement.title}
-                              className="relative z-10 h-full w-full object-contain"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0C]/50 via-transparent to-transparent" />
-                          </div>
-                        </figure>
-                      ))}
+            return (
+              <button
+                key={achievement.id}
+                type="button"
+                onClick={() => setSelected(achievement)}
+                className="group flex h-[520px] min-w-[310px] max-w-[310px] flex-col overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.055] to-white/[0.025] text-left shadow-2xl shadow-black/45 transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.06] md:min-w-[370px] md:max-w-[370px]"
+              >
+                <div className="relative h-[235px] shrink-0 overflow-hidden bg-[#050505]">
+                  {previewImage ? (
+                    <>
+                      <img src={previewImage} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full scale-105 object-cover opacity-25 blur-lg" />
+                      <img src={previewImage} alt={achievement.title} className="relative z-10 h-full w-full object-cover shadow-2xl shadow-black/40 transition duration-500 group-hover:scale-[1.015]" />
+                    </>
+                  ) : (
+                    <div className="grid h-full place-items-center rounded-2xl bg-white/[0.04]">
+                      <Icon className="h-10 w-10 text-zinc-500" />
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ) : null}
+                  )}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0C0C0C]/45 via-transparent to-transparent" />
+                </div>
+
+                <div className="flex min-h-0 flex-1 flex-col px-6 pb-6 pt-5">
+                  <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-zinc-100">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <p className="line-clamp-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500">{achievement.role}</p>
+                  <h3 className="mt-3 line-clamp-2 text-2xl font-semibold leading-tight text-zinc-100 md:text-[1.7rem]">{achievement.title}</h3>
+                  <p className="mt-3 line-clamp-2 text-[15px] leading-6 text-zinc-300">{achievement.summary}</p>
+                  <span className="mt-auto w-fit rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-semibold text-zinc-100 transition group-hover:border-white/25 group-hover:bg-white/[0.08]">
+                    View gallery
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      <AnimatePresence>
+        {selected ? (
+          <motion.div
+            className="fixed inset-0 z-[80] grid place-items-center bg-black/60 px-5 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.article
+              className="max-h-[88vh] w-full max-w-5xl overflow-y-auto rounded-3xl border border-white/15 bg-[#101010]/90 p-5 shadow-2xl shadow-black/70 backdrop-blur-xl md:p-7"
+              initial={{ opacity: 0, y: 28, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 18, scale: 0.98 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-zinc-500">{selected.role}</p>
+                  <h3 className="mt-4 text-3xl font-semibold leading-tight text-zinc-100 md:text-5xl">{selected.title}</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelected(null)}
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.05] text-zinc-300 transition hover:bg-white/[0.1] hover:text-white"
+                  aria-label="Close achievement details"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <p className="mt-6 max-w-4xl text-left text-base leading-7 text-zinc-300 md:text-lg md:leading-8">{selected.description}</p>
+
+              <div className="mt-8 grid items-start gap-5 md:grid-cols-2">
+                {selected.images.map((image) => (
+                  <figure key={image} className={selected.images.length === 1 ? "md:col-span-2" : ""}>
+                    <img src={image} alt={selected.title} className="h-auto w-full rounded-2xl object-contain" />
+                  </figure>
+                ))}
+              </div>
+            </motion.article>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import { SocialLinks } from "./SocialLinks";
@@ -16,7 +16,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-5 text-sm font-semibold uppercase tracking-[0.35em] text-zinc-400"
+            className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-zinc-400 md:text-sm md:tracking-[0.35em]"
           >
             {profile.role}
           </motion.p>
@@ -62,3 +62,4 @@ export function HeroSection() {
     </section>
   );
 }
+
