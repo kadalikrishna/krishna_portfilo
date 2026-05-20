@@ -32,7 +32,7 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="flex gap-6 overflow-x-auto pb-4 md:gap-7">
+        <div className="achievement-strip flex gap-6 overflow-x-auto pb-4 md:gap-7">
           {achievements.map((achievement) => {
             const Icon = iconForAchievement(achievement.id);
             const previewImage = achievement.images[0];
@@ -42,14 +42,17 @@ export function TestimonialsSection() {
                 key={achievement.id}
                 type="button"
                 onClick={() => setSelected(achievement)}
-                className="group flex h-[520px] min-w-[310px] max-w-[310px] flex-col overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.055] to-white/[0.025] text-left shadow-2xl shadow-black/45 transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.06] md:min-w-[370px] md:max-w-[370px]"
+                className="achievement-card group flex h-[520px] min-w-[310px] max-w-[310px] flex-col overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.055] to-white/[0.025] text-left shadow-2xl shadow-black/45 transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.06] md:min-w-[370px] md:max-w-[370px]"
               >
                 <div className="relative h-[235px] shrink-0 overflow-hidden bg-[#050505]">
                   {previewImage ? (
-                    <>
-                      <img src={previewImage} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full scale-105 object-cover opacity-25 blur-lg" />
-                      <img src={previewImage} alt={achievement.title} className="relative z-10 h-full w-full object-cover shadow-2xl shadow-black/40 transition duration-500 group-hover:scale-[1.015]" />
-                    </>
+                    <img
+                      src={previewImage}
+                      alt={achievement.title}
+                      className="h-full w-full object-cover shadow-2xl shadow-black/40 transition duration-500 group-hover:scale-[1.015]"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   ) : (
                     <div className="grid h-full place-items-center rounded-2xl bg-white/[0.04]">
                       <Icon className="h-10 w-10 text-zinc-500" />
@@ -78,14 +81,14 @@ export function TestimonialsSection() {
       <AnimatePresence>
         {selected ? (
           <motion.div
-            className="fixed inset-0 z-[80] grid place-items-center bg-black/60 px-5 backdrop-blur-md"
+            className="fixed inset-0 z-[80] grid place-items-center bg-black/70 px-4 py-5 md:px-5 md:backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelected(null)}
           >
             <motion.article
-              className="max-h-[88vh] w-full max-w-5xl overflow-y-auto rounded-3xl border border-white/15 bg-[#101010]/90 p-5 shadow-2xl shadow-black/70 backdrop-blur-xl md:p-7"
+              className="achievement-modal max-h-[88vh] w-full max-w-5xl overflow-y-auto overscroll-contain rounded-3xl border border-white/15 bg-[#101010]/95 p-4 shadow-2xl shadow-black/70 md:bg-[#101010]/90 md:p-7 md:backdrop-blur-xl"
               initial={{ opacity: 0, y: 28, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -112,7 +115,13 @@ export function TestimonialsSection() {
               <div className="mt-8 grid items-start gap-5 md:grid-cols-2">
                 {selected.images.map((image) => (
                   <figure key={image} className={selected.images.length === 1 ? "md:col-span-2" : ""}>
-                    <img src={image} alt={selected.title} className="h-auto w-full rounded-2xl object-contain" />
+                    <img
+                      src={image}
+                      alt={selected.title}
+                      className="h-auto w-full rounded-2xl object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </figure>
                 ))}
               </div>

@@ -178,6 +178,28 @@ section {
   contain: paint;
 }
 
+.achievement-card {
+  backface-visibility: hidden;
+  contain: layout paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 370px 520px;
+}
+
+.achievement-strip {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x proximity;
+}
+
+.achievement-strip > * {
+  scroll-snap-align: start;
+}
+
+.achievement-modal {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
 .project-html-preview {
   height: 100%;
   background: #050505;
