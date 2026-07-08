@@ -1,4 +1,5 @@
 import { usePortfolio } from "../hooks/usePortfolio";
+import { HorizontalScrollRow } from "./HorizontalScrollRow";
 
 export function SkillsSection() {
   const { skills } = usePortfolio();
@@ -10,7 +11,7 @@ export function SkillsSection() {
         <h2 className="hero-heading max-w-4xl text-5xl font-semibold leading-none md:text-7xl">
           Creating reliable and useful applications.
         </h2>
-        <div className="mt-12 flex gap-4 overflow-x-auto pb-4">
+        <HorizontalScrollRow className="mt-12 flex gap-4 overflow-x-auto pb-4 pr-14" ariaLabel="Scroll skills to the right">
           {skills.categories.map((category) => (
             <article
               key={category.name}
@@ -26,7 +27,7 @@ export function SkillsSection() {
               </div>
             </article>
           ))}
-        </div>
+        </HorizontalScrollRow>
       </div>
     </section>
   );

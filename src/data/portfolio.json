@@ -137,6 +137,23 @@
                          "documentation":  "https://docs.google.com/document/d/126VJq3avVxn8NIkW74iYtBIEPY0V1BnT/edit?usp=drivesdk\u0026ouid=101325136574629494932\u0026rtpof=true\u0026sd=true"
                      },
                      {
+                         "id":  "predict-human-development-index-ml",
+                         "title":  "Predict Human Development Index with Machine Learning",
+                         "subtitle":  "SmartBridge Internship Final Project",
+                         "description":  "Built a machine learning project to predict Human Development Index as part of my SmartBridge internship final project.",
+                         "stack":  [
+                                       "Python",
+                                       "Machine Learning",
+                                       "Data Analysis"
+                                   ],
+                         "role":  "Internship final project developer",
+                         "year":  "2025",
+                         "link":  "https://project-v-mauve.vercel.app/",
+                         "highlight":  false,
+                         "github":  "https://github.com/kadalikrishna/ProjectV",
+                         "documentation":  ""
+                     },
+                     {
                          "id":  "smart-waste-management",
                          "title":  "Smart Waste Management and Sanitation System",
                          "subtitle":  "IoT Waste Monitoring System",

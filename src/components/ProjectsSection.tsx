@@ -3,6 +3,7 @@ import { ArrowUpRight, BookOpen, Github, X } from "lucide-react";
 import { useState } from "react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import type { Project } from "../types/portfolio";
+import { HorizontalScrollRow } from "./HorizontalScrollRow";
 import { ProjectCard } from "./ProjectCard";
 
 export function ProjectsSection() {
@@ -18,11 +19,11 @@ export function ProjectsSection() {
         <h2 className="hero-heading max-w-5xl text-5xl font-semibold leading-none md:text-7xl">
           Here&apos;s what I built.
         </h2>
-        <div className="mt-14 flex items-stretch gap-5 overflow-x-auto pb-4">
+        <HorizontalScrollRow className="mt-14 flex items-stretch gap-5 overflow-x-auto pb-4 pr-14" ariaLabel="Scroll projects to the right">
           {sortedProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} onSelect={setSelected} />
           ))}
-        </div>
+        </HorizontalScrollRow>
       </div>
 
       <AnimatePresence>
@@ -128,4 +129,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-

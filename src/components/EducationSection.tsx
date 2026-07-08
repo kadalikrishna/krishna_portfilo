@@ -1,5 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import { usePortfolio } from "../hooks/usePortfolio";
+import { HorizontalScrollRow } from "./HorizontalScrollRow";
 
 export function EducationSection() {
   const { education } = usePortfolio();
@@ -12,7 +13,7 @@ export function EducationSection() {
           Learning path and academic foundation.
         </h2>
 
-        <div className="mt-14 flex gap-5 overflow-x-auto pb-4">
+        <HorizontalScrollRow className="mt-14 flex gap-5 overflow-x-auto pb-4 pr-14" ariaLabel="Scroll education to the right">
           {education.map((item) => (
             <article
               key={`${item.institution}-${item.period}`}
@@ -48,7 +49,7 @@ export function EducationSection() {
               </div>
             </article>
           ))}
-        </div>
+        </HorizontalScrollRow>
       </div>
     </section>
   );

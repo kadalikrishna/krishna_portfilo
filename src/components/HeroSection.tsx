@@ -24,7 +24,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="hero-heading hero-name mx-auto font-semibold leading-[0.92] tracking-tight"
+            className="hero-heading hero-name mx-auto font-semibold leading-[1.02] tracking-tight"
           >
             Hi, I&apos;m {profile.shortName}
           </motion.h1>
@@ -62,4 +62,3 @@ export function HeroSection() {
     </section>
   );
 }
-

@@ -69,14 +69,15 @@ section {
 
 .hero-name {
   width: min(100%, 1180px);
+  max-width: calc(100vw - 2rem);
   white-space: normal;
-  font-size: clamp(2rem, 9.2vw, 6.5rem);
+  font-size: clamp(2.2rem, 9vw, 6rem);
 }
 
 @media (min-width: 768px) {
   .hero-name {
     white-space: nowrap;
-    font-size: clamp(1.2rem, 5vw, 6.5rem);
+    font-size: clamp(2.4rem, 4.6vw, 5.75rem);
   }
 }
 
@@ -242,4 +243,3 @@ section {
   display: block;
   background: #050505;
 }
-

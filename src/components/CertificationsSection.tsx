@@ -3,6 +3,7 @@ import { Award, ExternalLink, X } from "lucide-react";
 import { useState } from "react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import type { Certification } from "../types/portfolio";
+import { HorizontalScrollRow } from "./HorizontalScrollRow";
 
 export function CertificationsSection() {
   const { certifications } = usePortfolio();
@@ -16,7 +17,7 @@ export function CertificationsSection() {
           Verified learning and credentials.
         </h2>
 
-        <div className="mt-14 flex items-stretch gap-5 overflow-x-auto pb-4">
+        <HorizontalScrollRow className="mt-14 flex items-stretch gap-5 overflow-x-auto pb-4 pr-14" ariaLabel="Scroll certifications to the right">
           {certifications.length ? (
             certifications.map((certificate) => (
               <button
@@ -76,7 +77,7 @@ export function CertificationsSection() {
               </div>
             </div>
           )}
-        </div>
+        </HorizontalScrollRow>
       </div>
 
       <AnimatePresence>

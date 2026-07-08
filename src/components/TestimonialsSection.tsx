@@ -3,6 +3,7 @@ import { Award, BrainCircuit, HandHeart, Newspaper, Rocket, Trophy, Users, X } f
 import { useState } from "react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import type { Achievement } from "../types/portfolio";
+import { HorizontalScrollRow } from "./HorizontalScrollRow";
 
 const iconForAchievement = (id: string) => {
   if (id.includes("quiz")) return Trophy;
@@ -32,7 +33,7 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="achievement-strip flex gap-6 overflow-x-auto pb-4 md:gap-7">
+        <HorizontalScrollRow className="achievement-strip flex gap-6 overflow-x-auto pb-4 pr-14 md:gap-7" ariaLabel="Scroll achievements to the right">
           {achievements.map((achievement) => {
             const Icon = iconForAchievement(achievement.id);
             const previewImage = achievement.images[0];
@@ -75,7 +76,7 @@ export function TestimonialsSection() {
               </button>
             );
           })}
-        </div>
+        </HorizontalScrollRow>
       </div>
 
       <AnimatePresence>
@@ -132,7 +133,6 @@ export function TestimonialsSection() {
     </section>
   );
 }
-
 
 
 
