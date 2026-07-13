@@ -1,5 +1,5 @@
 ﻿import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import { SocialLinks } from "./SocialLinks";
 
@@ -47,6 +47,15 @@ export function HeroSection() {
             </a>
             <a href="#contact" className="glass-button">
               Contact Me
+            </a>
+            <a
+              href={profile.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="glass-button"
+              aria-label="View résumé in a new tab"
+            >
+              <FileText className="h-5 w-5" /> View Résumé
             </a>
           </motion.div>
           <motion.div

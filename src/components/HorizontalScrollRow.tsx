@@ -61,7 +61,7 @@ export function HorizontalScrollRow({ children, className = "", ariaLabel }: Hor
         <button
           type="button"
           onClick={() => scrollByDirection(-1)}
-          className="absolute left-0 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-[#101010]/85 text-zinc-100 shadow-2xl shadow-black/40 backdrop-blur transition hover:border-white/30 hover:bg-white/[0.12] focus:outline-none focus:ring-2 focus:ring-white/35"
+          className="absolute left-0 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center text-zinc-100 transition hover:scale-110 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/35"
           aria-label={ariaLabel.replace("right", "left")}
         >
           <ChevronLeft className="h-5 w-5" />
@@ -71,7 +71,7 @@ export function HorizontalScrollRow({ children, className = "", ariaLabel }: Hor
         <button
           type="button"
           onClick={() => scrollByDirection(1)}
-          className="absolute right-0 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-[#101010]/85 text-zinc-100 shadow-2xl shadow-black/40 backdrop-blur transition hover:border-white/30 hover:bg-white/[0.12] focus:outline-none focus:ring-2 focus:ring-white/35"
+          className="absolute right-0 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center text-zinc-100 transition hover:scale-110 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/35"
           aria-label={ariaLabel}
         >
           <ChevronRight className="h-5 w-5" />

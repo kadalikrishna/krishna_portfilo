@@ -1,4 +1,4 @@
-﻿import { Copy } from "lucide-react";
+﻿import { Copy, Download } from "lucide-react";
 import { usePortfolio } from "../hooks/usePortfolio";
 import { SocialLinks } from "./SocialLinks";
 
@@ -58,6 +58,14 @@ export function Footer() {
               </button>
             ) : null}
             {profile.social.phone ? <a href={`tel:${profile.social.phone}`} className="glass-button">{profile.social.phone}</a> : null}
+            <a
+              href={profile.resumeUrl}
+              download={profile.resumeDownloadName}
+              className="glass-button"
+              aria-label="Download résumé as a PDF"
+            >
+              <Download className="h-4 w-4" /> Download Résumé
+            </a>
           </div>
           <div className="mt-5">
             <SocialLinks social={profile.social} compact />
@@ -72,7 +80,5 @@ export function Footer() {
     </footer>
   );
 }
-
-
 
 
