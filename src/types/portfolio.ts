@@ -18,6 +18,8 @@ export type Profile = {
   aboutHeading: string;
   bio: string;
   avatarSvg: string;
+  resumeUrl: string;
+  resumeDownloadName: string;
   social: SocialLinks;
 };
 
@@ -82,4 +84,3 @@ export type Portfolio = {
   achievements: Achievement[];
   certifications: Certification[];
 };
-

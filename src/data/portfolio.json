@@ -9,6 +9,8 @@
                     "yearsOfExperience":  "3+ Projects",
                     "aboutHeading":  "Building projects and learning by creating.",
                     "bio":  "I enjoy building software and AI-based projects using Python and modern web technologies. I have worked on projects involving AI applications, IoT systems, and interactive web platforms. I am currently learning more about cloud technologies, DevOps, and software development while improving my problem-solving and project-building skills.",
+                    "resumeUrl":  "/resume/kadali-naga-sri-krishna-resume.pdf",
+                    "resumeDownloadName":  "Kadali-Naga-Sri-Krishna-Resume.pdf",
                     "avatarSvg":  "\u003csvg viewBox=\u00270 0 240 240\u0027 xmlns=\u0027http://www.w3.org/2000/svg\u0027\u003e\u003cdefs\u003e\u003clinearGradient id=\u0027g\u0027 x1=\u00270\u0027 x2=\u00271\u0027 y1=\u00270\u0027 y2=\u00271\u0027\u003e\u003cstop stop-color=\u0027#f5f7fb\u0027/\u003e\u003cstop offset=\u00270.45\u0027 stop-color=\u0027#b8c5d9\u0027/\u003e\u003cstop offset=\u00271\u0027 stop-color=\u0027#ff7a3d\u0027/\u003e\u003c/linearGradient\u003e\u003c/defs\u003e\u003crect width=\u0027240\u0027 height=\u0027240\u0027 rx=\u002764\u0027 fill=\u0027#111\u0027/\u003e\u003ccircle cx=\u0027120\u0027 cy=\u002796\u0027 r=\u002746\u0027 fill=\u0027url(#g)\u0027/\u003e\u003cpath d=\u0027M48 206c10-46 40-72 72-72s62 26 72 72\u0027 fill=\u0027url(#g)\u0027 opacity=\u00270.88\u0027/\u003e\u003cpath d=\u0027M34 45h172v150H34z\u0027 fill=\u0027none\u0027 stroke=\u0027rgba(255,255,255,.16)\u0027 stroke-width=\u00272\u0027/\u003e\u003c/svg\u003e",
                     "social":  {
                                    "github":  "https://github.com/kadalikrishna",
