@@ -40,29 +40,29 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-8 flex flex-wrap justify-center gap-4"
+            className="mx-auto mt-8 flex w-full max-w-sm flex-col justify-center gap-4 sm:max-w-none sm:flex-row sm:flex-wrap"
           >
-            <a href="#projects" className="accent-button">
+            <a href="#projects" className="accent-button w-full justify-center sm:w-auto">
               View Projects <ArrowUpRight className="h-5 w-5" />
-            </a>
-            <a href="#contact" className="glass-button">
-              Contact Me
             </a>
             <a
               href={profile.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="glass-button"
+              className="glass-button w-full justify-center sm:w-auto"
               aria-label="View résumé in a new tab"
             >
-              <FileText className="h-5 w-5" /> View Résumé
+              <FileText className="h-5 w-5" /> Resume
+            </a>
+            <a href="#contact" className="glass-button w-full justify-center sm:w-auto">
+              Contact Me
             </a>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="mt-8 flex justify-center"
+            className="mt-8 flex justify-center [&>div]:justify-center"
           >
             <SocialLinks social={profile.social} />
           </motion.div>
